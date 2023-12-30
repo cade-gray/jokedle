@@ -28,7 +28,8 @@ function App() {
 
   return (
     <div className="flex flex-col items-center max-w-screen-lg mx-auto">
-      <h1 className="text-3xl font-bold underline">Jokedle</h1>
+      <h1 className="text-3xl font-bold">Jokedle</h1>
+      <h2 className="text-2xl font-bold">Coming Soon...</h2>
       <p className="text-xl font-semibold">{joke.setup}</p>
       <div className="grid grid-cols-12 grid-rows-6">
         {Array.from(joke.formattedPunchline, (char, index) => (
