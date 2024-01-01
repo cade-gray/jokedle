@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FirstPickInput } from "./FirstPickInput";
 import { JokeGrid } from "./JokeGrid";
 import { Joke } from "../interfaces/Joke";
@@ -25,9 +25,12 @@ export const GameContainer = ({
   // Letters that have been guessed
   const [letters, setLetters] = React.useState<string[]>([]);
   const [lives, setLives] = React.useState<number>(5);
-  const [punchline] = React.useState<string>(
-    joke.punchline.replace(/[^a-zA-Z0-9 ]/g, "").toUpperCase()
-  );
+  const [punchline, setPunchline] = React.useState<string>("");
+
+  useEffect(() => {
+    console.log(joke);
+    setPunchline(joke.punchline.replace(/[^a-zA-Z0-9]/g, "").toUpperCase());
+  }, [joke]);
   // Logic for InputContainer.  Determines which input to show based on gameState.
   const InputContainer = ({
     gameState,
