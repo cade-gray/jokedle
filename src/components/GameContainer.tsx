@@ -25,6 +25,9 @@ export const GameContainer = ({
   // Letters that have been guessed
   const [letters, setLetters] = React.useState<string[]>([]);
   const [lives, setLives] = React.useState<number>(5);
+  const [punchline] = React.useState<string>(
+    joke.punchline.replace(/[^a-zA-Z0-9 ]/g, "").toUpperCase()
+  );
   // Logic for InputContainer.  Determines which input to show based on gameState.
   const InputContainer = ({
     gameState,
@@ -87,7 +90,7 @@ export const GameContainer = ({
           setGameState={setGameState}
           letters={letters}
           setLetters={setLetters}
-          punchline={joke.punchline}
+          punchline={punchline}
           lives={lives}
           setLives={setLives}
         />
@@ -95,7 +98,7 @@ export const GameContainer = ({
           <h2 className="text-xl">Debug</h2>
           <div>Game State: {gameState}</div>
           <div>Letters: {letters}</div>
-          <div>Punchline: {joke.punchline}</div>
+          <div>Punchline: {punchline}</div>
           <div>Lives: {lives}</div>
         </div>
       </>

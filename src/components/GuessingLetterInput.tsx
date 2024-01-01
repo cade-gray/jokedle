@@ -68,7 +68,7 @@ export const GuessingLetterInput: React.FC<GuessingLetterInputProps> = ({
           onChange={(e) => {
             const value = e.target.value;
             if (value === "" || /^[a-zA-Z]$/.test(value)) {
-              handleInputChange([value]);
+              handleInputChange([value.toUpperCase()]);
             }
           }}
           className="m-1 p-1 border-2 border-gray-300 w-10 text-center"
