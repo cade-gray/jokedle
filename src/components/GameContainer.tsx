@@ -80,6 +80,7 @@ export const GameContainer = ({
   else
     return (
       <>
+        <h2 className="text-xl">{joke.setup}</h2>
         <JokeGrid formattedPunchline={joke.formattedPunchline} />
         <InputContainer
           gameState={gameState}
