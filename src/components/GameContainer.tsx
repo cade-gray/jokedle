@@ -85,9 +85,12 @@ export const GameContainer = ({
   if (gameState === "loading") return <div>Loading Joke of the day...</div>;
   else
     return (
-      <>
+      <div className="flex flex-col items-center text-center">
         <h2 className="text-xl">{joke.setup}</h2>
-        <JokeGrid formattedPunchline={joke.formattedPunchline} />
+        <JokeGrid
+          formattedPunchline={joke.formattedPunchline}
+          letters={letters}
+        />
         <InputContainer
           gameState={gameState}
           setGameState={setGameState}
@@ -97,13 +100,13 @@ export const GameContainer = ({
           lives={lives}
           setLives={setLives}
         />
-        <div>
+        {/* <div className="flex flex-col items-center">
           <h2 className="text-xl">Debug</h2>
           <div>Game State: {gameState}</div>
           <div>Letters: {letters}</div>
           <div>Punchline: {punchline}</div>
           <div>Lives: {lives}</div>
-        </div>
-      </>
+        </div> */}
+      </div>
     );
 };
