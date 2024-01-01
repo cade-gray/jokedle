@@ -1,18 +1,23 @@
 import { useEffect } from "react";
 import "./App.css";
 import React from "react";
-
-interface Joke {
-  setup: string;
-  punchline: string;
-  formattedPunchline: string;
-}
+import { GameContainer } from "./components/GameContainer";
+import { Joke } from "./interfaces/Joke";
 function App() {
   const [joke, setJoke] = React.useState<Joke>({
     setup: "",
     punchline: "",
     formattedPunchline: "",
   });
+  const [gameState, setGameState] = React.useState<
+    | "loading"
+    | "firstPick"
+    | "guessingLetter"
+    | "guessingPunchline"
+    | "completeWin"
+    | "completeLoss"
+  >("loading");
+
   useEffect(() => {
     fetch("https://api.cadegray.dev/joke")
       .then((response) => response.json())
@@ -23,6 +28,7 @@ function App() {
           punchline: jokeBody.punchline,
           formattedPunchline: jokeBody.formattedPunchline,
         });
+        setGameState("firstPick");
       });
   }, []);
 
@@ -30,19 +36,11 @@ function App() {
     <div className="flex flex-col items-center max-w-screen-lg mx-auto">
       <h1 className="text-3xl font-bold">Jokedle</h1>
       <h2 className="text-2xl font-bold">Coming Soon...</h2>
-      <p className="text-xl font-semibold">{joke.setup}</p>
-      <div className="grid grid-cols-12 grid-rows-6">
-        {Array.from(joke.formattedPunchline, (char, index) => (
-          <div
-            key={index}
-            className={`m-1 p-1 flex items-center justify-center text-2xl font-semibold ${
-              char === " " ? "bg-gray-400/20" : "bg-gray-300"
-            }`}
-          >
-            {char === " " ? "" : char}
-          </div>
-        ))}
-      </div>
+      <GameContainer
+        gameState={gameState}
+        setGameState={setGameState}
+        joke={joke}
+      />
     </div>
   );
 }
