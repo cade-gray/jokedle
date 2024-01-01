@@ -36,6 +36,8 @@ export const FirstPickInput: React.FC<FirstPickInputProps> = ({
     setFirstPick(newFirstPick);
   };
 
+  const inputRefs = React.useRef<(HTMLInputElement | null)[]>([]);
+
   return (
     <div className="flex flex-col text-center items-center">
       <h2 className="text-xl">First Pick Input</h2>
@@ -46,6 +48,7 @@ export const FirstPickInput: React.FC<FirstPickInputProps> = ({
             type="text"
             maxLength={1}
             value={firstPick[i]}
+            ref={(el) => (inputRefs.current[i] = el)}
             onChange={(e) => {
               const value = e.target.value.toUpperCase();
               if (
@@ -53,6 +56,9 @@ export const FirstPickInput: React.FC<FirstPickInputProps> = ({
                 !firstPick.includes(value)
               ) {
                 handleInputChange(i, value);
+                if (inputRefs.current[i + 1]) {
+                  inputRefs.current[i + 1]?.focus();
+                }
               }
             }}
             className="m-1 p-1 border-2 border-gray-300 w-10 text-center"
