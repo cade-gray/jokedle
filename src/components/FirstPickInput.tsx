@@ -47,9 +47,12 @@ export const FirstPickInput: React.FC<FirstPickInputProps> = ({
             maxLength={1}
             value={firstPick[i]}
             onChange={(e) => {
-              const value = e.target.value;
-              if (value === "" || /^[a-zA-Z]$/.test(value)) {
-                handleInputChange(i, value.toUpperCase());
+              const value = e.target.value.toUpperCase();
+              if (
+                (value === "" || /^[a-zA-Z]$/.test(value)) &&
+                !firstPick.includes(value)
+              ) {
+                handleInputChange(i, value);
               }
             }}
             className="m-1 p-1 border-2 border-gray-300 w-10 text-center"

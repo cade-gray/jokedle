@@ -66,9 +66,12 @@ export const GuessingLetterInput: React.FC<GuessingLetterInputProps> = ({
           maxLength={1}
           value={letterGuess}
           onChange={(e) => {
-            const value = e.target.value;
-            if (value === "" || /^[a-zA-Z]$/.test(value)) {
-              handleInputChange([value.toUpperCase()]);
+            const value = e.target.value.toUpperCase();
+            if (
+              (value === "" || /^[a-zA-Z]$/.test(value)) &&
+              !letters.includes(value)
+            ) {
+              handleInputChange([value]);
             }
           }}
           className="m-1 p-1 border-2 border-gray-300 w-10 text-center"
@@ -76,10 +79,12 @@ export const GuessingLetterInput: React.FC<GuessingLetterInputProps> = ({
         <button
           className="m-1 p-1 border-2 border-gray-300 text-center text-lg w-fit"
           onClick={() => {
-            console.log("Letter Guess: " + letterGuess);
-            console.log(checkLetter(letterGuess[0]));
-            // append letterGuess to letters
-            setLetters([...letters, ...letterGuess]);
+            if (!letters.includes(letterGuess[0])) {
+              console.log("Letter Guess: " + letterGuess);
+              console.log(checkLetter(letterGuess[0]));
+              // append letterGuess to letters
+              setLetters([...letters, ...letterGuess]);
+            }
           }}
         >
           Submit
