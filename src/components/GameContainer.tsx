@@ -87,6 +87,7 @@ export const GameContainer = ({
     return (
       <div className="flex flex-col items-center text-center">
         <h2 className="text-xl">{joke.setup}</h2>
+        <h3 className="text-lg">Lives: {lives}</h3>
         <JokeGrid
           formattedPunchline={joke.formattedPunchline}
           letters={letters}
