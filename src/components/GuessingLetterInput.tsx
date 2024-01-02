@@ -57,6 +57,7 @@ export const GuessingLetterInput: React.FC<GuessingLetterInputProps> = ({
     }
   };
 
+  const submitButtonRef = React.useRef<HTMLButtonElement | null>(null);
   return (
     <div className="flex flex-col text-center">
       <h2 className="text-xl">Guessing Letter Input</h2>
@@ -72,11 +73,15 @@ export const GuessingLetterInput: React.FC<GuessingLetterInputProps> = ({
               !letters.includes(value)
             ) {
               handleInputChange([value]);
+              if (value !== "") {
+                submitButtonRef.current?.focus();
+              }
             }
           }}
           className="m-1 p-1 border-2 border-gray-300 w-10 text-center"
         />
         <button
+          ref={submitButtonRef}
           className="m-1 p-1 border-2 border-gray-300 text-center text-lg w-fit"
           onClick={() => {
             if (!letters.includes(letterGuess[0])) {

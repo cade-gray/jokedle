@@ -35,7 +35,7 @@ export const FirstPickInput: React.FC<FirstPickInputProps> = ({
     newFirstPick[index] = value;
     setFirstPick(newFirstPick);
   };
-
+  const submitButtonRef = React.useRef<HTMLButtonElement | null>(null);
   const inputRefs = React.useRef<(HTMLInputElement | null)[]>([]);
 
   return (
@@ -59,6 +59,10 @@ export const FirstPickInput: React.FC<FirstPickInputProps> = ({
                 if (inputRefs.current[i + 1]) {
                   inputRefs.current[i + 1]?.focus();
                 }
+                if (i === 4 && value !== "") {
+                  submitButtonRef.current?.focus();
+                  console.log("Last input");
+                }
               }
             }}
             className="m-1 p-1 border-2 border-gray-300 w-10 text-center"
@@ -66,6 +70,7 @@ export const FirstPickInput: React.FC<FirstPickInputProps> = ({
         ))}
       </div>
       <button
+        ref={submitButtonRef}
         className="m-1 p-1 border-2 border-gray-300 text-center text-lg w-fit"
         onClick={() => {
           console.log("First Pick: " + firstPick);
