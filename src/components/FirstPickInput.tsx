@@ -49,19 +49,24 @@ export const FirstPickInput: React.FC<FirstPickInputProps> = ({
             maxLength={1}
             value={firstPick[i]}
             ref={(el) => (inputRefs.current[i] = el)}
+            onKeyDown={(e) => {
+              const value = (e.target as HTMLInputElement).value.toUpperCase();
+              if (e.key === "Backspace" && value === "" && i > 0) {
+                inputRefs.current[i - 1]?.focus();
+              }
+            }}
             onChange={(e) => {
               const value = e.target.value.toUpperCase();
               if (
-                (value === "" || /^[a-zA-Z]$/.test(value)) &&
-                !firstPick.includes(value)
+                value === "" ||
+                (/^[a-zA-Z]$/.test(value) && !firstPick.includes(value))
               ) {
                 handleInputChange(i, value);
-                if (inputRefs.current[i + 1]) {
+                if (value !== "" && inputRefs.current[i + 1]) {
                   inputRefs.current[i + 1]?.focus();
                 }
                 if (i === 4 && value !== "") {
                   submitButtonRef.current?.focus();
-                  console.log("Last input");
                 }
               }
             }}
