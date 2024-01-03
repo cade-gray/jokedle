@@ -64,7 +64,7 @@ export const GuessingLetterInput: React.FC<GuessingLetterInputProps> = ({
   const submitButtonRef = React.useRef<HTMLButtonElement | null>(null);
   return (
     <div className="flex flex-col text-center">
-      <h2 className="text-xl">Guessing Letter Input</h2>
+      <h2 className="text-xl">Pick A Letter</h2>
       <div className="flex flex-col items-center">
         <input
           type="text"
@@ -88,7 +88,7 @@ export const GuessingLetterInput: React.FC<GuessingLetterInputProps> = ({
           ref={submitButtonRef}
           className="m-1 p-1 border-2 border-gray-300 text-center text-lg w-fit"
           onClick={() => {
-            if (!letters.includes(letterGuess[0])) {
+            if (!letters.includes(letterGuess[0]) && letterGuess[0] !== "") {
               console.log("Letter Guess: " + letterGuess);
               console.log(checkLetter(letterGuess[0]));
               // append letterGuess to letters

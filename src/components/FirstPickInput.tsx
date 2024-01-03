@@ -40,7 +40,7 @@ export const FirstPickInput: React.FC<FirstPickInputProps> = ({
 
   return (
     <div className="flex flex-col text-center items-center">
-      <h2 className="text-xl">First Pick Input</h2>
+      <h2 className="text-xl">Pick 5 Letters</h2>
       <div className="flex">
         {[...Array(5)].map((_, i) => (
           <input
