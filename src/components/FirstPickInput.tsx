@@ -78,7 +78,6 @@ export const FirstPickInput: React.FC<FirstPickInputProps> = ({
         ref={submitButtonRef}
         className="m-1 p-1 border-2 border-gray-300 text-center text-lg w-fit rounded-md"
         onClick={() => {
-          console.log("First Pick: " + firstPick);
           setLetters(firstPick);
           setGameState("guessingLetter");
         }}

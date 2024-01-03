@@ -29,7 +29,6 @@ export const GameContainer = ({
   const [feedbackMsg, setFeedbackMsg] = React.useState<string>("");
 
   useEffect(() => {
-    console.log(joke);
     setPunchline(joke.punchline.replace(/[^a-zA-Z0-9]/g, "").toUpperCase());
   }, [joke]);
   // Logic for InputContainer.  Determines which input to show based on gameState.
