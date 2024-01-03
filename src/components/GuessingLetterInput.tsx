@@ -82,11 +82,11 @@ export const GuessingLetterInput: React.FC<GuessingLetterInputProps> = ({
               }
             }
           }}
-          className="m-1 p-1 border-2 border-gray-300 w-10 text-center"
+          className="m-1 p-1 border-2 border-gray-300 w-10 text-center rounded-md"
         />
         <button
           ref={submitButtonRef}
-          className="m-1 p-1 border-2 border-gray-300 text-center text-lg w-fit"
+          className="m-1 p-1 border-2 border-gray-300 text-center text-lg w-fit rounded-md"
           onClick={() => {
             if (!letters.includes(letterGuess[0]) && letterGuess[0] !== "") {
               console.log("Letter Guess: " + letterGuess);
