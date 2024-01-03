@@ -84,11 +84,11 @@ export const GameContainer = ({
         />
       );
     } else if (gameState === "guessingPunchline") {
-      <p>Guessing Punchline State</p>;
+      return <p>Guessing Punchline State</p>;
     } else if (gameState === "completeWin") {
-      <p className="text-lg">Nice job!</p>;
+      return <p className="text-lg">Nice job!</p>;
     } else if (gameState === "completeLoss") {
-      <p className="text-lg">Game Over!</p>;
+      return <p className="text-2xl font-extrabold text-red-600">Game Over!</p>;
     } else {
       return <div>Game State Error</div>;
     }
@@ -99,10 +99,16 @@ export const GameContainer = ({
     return (
       <div className="flex flex-col items-center text-center">
         <h2 className="text-xl">{joke.setup}</h2>
-        <h3 className="text-lg">Lives: {lives}</h3>
+        <h3 className="text-lg">
+          Lives:{" "}
+          {Array.from({ length: lives }, (_, i) => (
+            <span key={i}>❤️</span>
+          ))}
+        </h3>
         <JokeGrid
           formattedPunchline={joke.formattedPunchline}
           letters={letters}
+          gameState={gameState}
         />
         <div className="flex items-center">
           <p className="text-md font-semibold">{feedbackMsg}</p>
