@@ -24,6 +24,7 @@ interface GuessingLetterInputProps {
   punchline: string;
   lives: number;
   setLives: React.Dispatch<React.SetStateAction<number>>;
+  setFeedbackMsg: React.Dispatch<React.SetStateAction<string>>;
 }
 export const GuessingLetterInput: React.FC<GuessingLetterInputProps> = ({
   //gameState,
@@ -33,6 +34,7 @@ export const GuessingLetterInput: React.FC<GuessingLetterInputProps> = ({
   punchline,
   lives,
   setLives,
+  setFeedbackMsg,
 }) => {
   const [letterGuess, setLetterGuess] = React.useState<string[]>(
     Array(1).fill("")
@@ -46,9 +48,11 @@ export const GuessingLetterInput: React.FC<GuessingLetterInputProps> = ({
 
   const checkLetter = (letter: string) => {
     if (punchline.includes(letter)) {
+      setFeedbackMsg(letter + " Found ✅");
       return true;
     } else {
       setLives(lives - 1);
+      setFeedbackMsg(letter + " Not Found ❌");
       //console.log(lives);
       if (lives - 1 === 0) {
         setGameState("completeLoss");

@@ -26,6 +26,7 @@ export const GameContainer = ({
   const [letters, setLetters] = React.useState<string[]>([]);
   const [lives, setLives] = React.useState<number>(5);
   const [punchline, setPunchline] = React.useState<string>("");
+  const [feedbackMsg, setFeedbackMsg] = React.useState<string>("");
 
   useEffect(() => {
     console.log(joke);
@@ -40,6 +41,7 @@ export const GameContainer = ({
     punchline,
     lives,
     setLives,
+    setFeedbackMsg,
   }: {
     gameState: string;
     setGameState: React.Dispatch<
@@ -57,6 +59,7 @@ export const GameContainer = ({
     punchline: string;
     lives: number;
     setLives: React.Dispatch<React.SetStateAction<number>>;
+    setFeedbackMsg: React.Dispatch<React.SetStateAction<string>>;
   }) => {
     if (gameState === "firstPick") {
       return (
@@ -77,8 +80,17 @@ export const GameContainer = ({
           punchline={punchline}
           lives={lives}
           setLives={setLives}
+          setFeedbackMsg={setFeedbackMsg}
         />
       );
+    } else if (gameState === "guessingPunchline") {
+      <p>Guessing Punchline State</p>;
+    } else if (gameState === "completeWin") {
+      <p className="text-lg">Nice job!</p>;
+    } else if (gameState === "completeLoss") {
+      <p className="text-lg">Game Over!</p>;
+    } else {
+      return <div>Game State Error</div>;
     }
   };
 
@@ -92,6 +104,9 @@ export const GameContainer = ({
           formattedPunchline={joke.formattedPunchline}
           letters={letters}
         />
+        <div className="flex items-center">
+          <p className="text-md font-semibold">{feedbackMsg}</p>
+        </div>
         <InputContainer
           gameState={gameState}
           setGameState={setGameState}
@@ -100,6 +115,7 @@ export const GameContainer = ({
           punchline={punchline}
           lives={lives}
           setLives={setLives}
+          setFeedbackMsg={setFeedbackMsg}
         />
         {/* <div className="flex flex-col items-center">
           <h2 className="text-xl">Debug</h2>
