@@ -12,5 +12,5 @@
 
 ## Goals for Version 1.0
 
-- [] Ability for gussing entire punchline instead of 1 letter each.
-- [] Custom Keyboard instead of using default, especially good for mobile.
+- [ ] Ability for gussing entire punchline instead of 1 letter each.
+- [ ] Custom Keyboard instead of using default, especially good for mobile.
