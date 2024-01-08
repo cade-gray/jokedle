@@ -1,30 +1,16 @@
-# React + TypeScript + Vite
+# Jokedle ReactJS Web Front End
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Developed by Cade Gray
 
-Currently, two official plugins are available:
+## Version 0.1.0 Beta
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Game Rules
 
-## Expanding the ESLint configuration
+- Start by picking 5 random letters. From there guess 1 letter each turn.
+- If the letter is incorrect when guessing as single letter, a life is lost.
+- If all lives are lost, the game is over. To win, must pick all letters in punchline.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Goals for Version 1.0
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- [] Ability for gussing entire punchline instead of 1 letter each.
+- [] Custom Keyboard instead of using default, especially good for mobile.
