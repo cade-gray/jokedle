@@ -94,7 +94,9 @@ export const GameContainer = ({
       return <p>Guessing Punchline State</p>;
     } else if (gameState === "completeWin") {
       return (
-        <p className="text-lg">Nice job! You have guessed the punchline!</p>
+        <p className="text-2xl font-extrabold text-green-600">
+          Nice job! You have solved the punchline!
+        </p>
       );
     } else if (gameState === "completeLoss") {
       return <p className="text-2xl font-extrabold text-red-600">Game Over!</p>;
