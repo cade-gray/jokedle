@@ -31,6 +31,14 @@ export const GameContainer = ({
   useEffect(() => {
     setPunchline(joke.punchline.replace(/[^a-zA-Z0-9]/g, "").toUpperCase());
   }, [joke]);
+  useEffect(() => {
+    const allCharsInLetters = punchline
+      .split("")
+      .every((char) => letters.includes(char));
+    if (allCharsInLetters) {
+      setGameState("completeWin");
+    }
+  }, [punchline, letters, setGameState]);
   // Logic for InputContainer.  Determines which input to show based on gameState.
   const InputContainer = ({
     gameState,
@@ -85,7 +93,9 @@ export const GameContainer = ({
     } else if (gameState === "guessingPunchline") {
       return <p>Guessing Punchline State</p>;
     } else if (gameState === "completeWin") {
-      return <p className="text-lg">Nice job!</p>;
+      return (
+        <p className="text-lg">Nice job! You have guessed the punchline!</p>
+      );
     } else if (gameState === "completeLoss") {
       return <p className="text-2xl font-extrabold text-red-600">Game Over!</p>;
     } else {
