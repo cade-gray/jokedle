@@ -35,7 +35,7 @@ export const GameContainer = ({
     const allCharsInLetters = punchline
       .split("")
       .every((char) => letters.includes(char));
-    if (allCharsInLetters) {
+    if (allCharsInLetters && gameState !== "loading") {
       setGameState("completeWin");
     }
   }, [punchline, letters, setGameState]);
