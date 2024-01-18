@@ -26,6 +26,24 @@ export const JokeGrid: React.FC<{
         ))}
       </div>
     );
+    // Added for when punchline is guessed correctly but not all letters are guessed.
+  } else if (gameState === "completeWin") {
+    return (
+      <div className="grid grid-cols-12 grid-rows-6">
+        {chars.map((char, index) => (
+          <div
+            key={index}
+            className={`m-1 p-1 flex items-center justify-center text-2xl font-semibold w-6 h-6 ${
+              char === " " || !/^[a-zA-Z]$/.test(char)
+                ? "bg-gray-400/20 border border-gray-600/20"
+                : "bg-green-500 border border-gray-600"
+            }`}
+          >
+            {char}
+          </div>
+        ))}
+      </div>
+    );
   } else {
     return (
       <div className="grid grid-cols-12 grid-rows-6">
