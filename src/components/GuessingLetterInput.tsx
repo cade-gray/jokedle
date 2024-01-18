@@ -63,7 +63,15 @@ export const GuessingLetterInput: React.FC<GuessingLetterInputProps> = ({
 
   const submitButtonRef = React.useRef<HTMLButtonElement | null>(null);
   return (
-    <div className="flex flex-col text-center">
+    <div className="flex flex-col text-center items-center">
+      <button
+        className="m-1 p-1 border-2 border-gray-300 text-center text-lg w-fit rounded-md"
+        onClick={() => {
+          setGameState("guessingPunchline");
+        }}
+      >
+        Guess Punchline
+      </button>
       <h2 className="text-xl">Pick A Letter</h2>
       <div className="flex flex-col items-center">
         <input

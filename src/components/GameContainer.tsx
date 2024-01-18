@@ -144,7 +144,7 @@ export const GameContainer = ({
           setLives={setLives}
           setFeedbackMsg={setFeedbackMsg}
         />
-        <div className="flex flex-col items-center">
+        {/* <div className="flex flex-col items-center">
           <h2 className="text-xl">Debug</h2>
           <div>Game State: {gameState}</div>
           <div>Letters: {letters}</div>
@@ -153,7 +153,7 @@ export const GameContainer = ({
           <button onClick={() => setGameState("guessingPunchline")}>
             Guess PunchLine State
           </button>
-        </div>
+        </div> */}
       </div>
     );
 };
