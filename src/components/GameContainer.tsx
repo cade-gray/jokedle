@@ -3,6 +3,7 @@ import { FirstPickInput } from "./FirstPickInput";
 import { JokeGrid } from "./JokeGrid";
 import { Joke } from "../interfaces/Joke";
 import { GuessingLetterInput } from "./GuessingLetterInput";
+import { GuessingPunchlineInput } from "./GuessingPunchlineInput";
 
 export const GameContainer = ({
   gameState,
@@ -91,7 +92,16 @@ export const GameContainer = ({
         />
       );
     } else if (gameState === "guessingPunchline") {
-      return <p>Guessing Punchline State</p>;
+      return (
+        <GuessingPunchlineInput
+          gameState={gameState}
+          setGameState={setGameState}
+          punchline={punchline}
+          lives={lives}
+          setLives={setLives}
+          setFeedbackMsg={setFeedbackMsg}
+        />
+      );
     } else if (gameState === "completeWin") {
       return (
         <p className="text-2xl font-extrabold text-green-600">
@@ -134,13 +144,16 @@ export const GameContainer = ({
           setLives={setLives}
           setFeedbackMsg={setFeedbackMsg}
         />
-        {/* <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center">
           <h2 className="text-xl">Debug</h2>
           <div>Game State: {gameState}</div>
           <div>Letters: {letters}</div>
           <div>Punchline: {punchline}</div>
           <div>Lives: {lives}</div>
-        </div> */}
+          <button onClick={() => setGameState("guessingPunchline")}>
+            Guess PunchLine State
+          </button>
+        </div>
       </div>
     );
 };
