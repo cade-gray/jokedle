@@ -59,7 +59,7 @@ export const GuessingPunchlineInput: React.FC<GuessingPunchlineInpuProps> = ({
       >
         Guess Letter
       </button>
-      <h2 className="text-xl">Guess the Punch Line</h2>
+      <h2 className="text-xl">Guess the Punchline</h2>
       <div className="flex flex-col items-center">
         <input
           type="text"
