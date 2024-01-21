@@ -25,7 +25,7 @@ export const GameContainer = ({
 }) => {
   // Letters that have been guessed
   const [letters, setLetters] = React.useState<string[]>([]);
-  const [lives, setLives] = React.useState<number>(5);
+  const [lives, setLives] = React.useState<number>(3);
   const [punchline, setPunchline] = React.useState<string>("");
   const [feedbackMsg, setFeedbackMsg] = React.useState<string>("");
 
