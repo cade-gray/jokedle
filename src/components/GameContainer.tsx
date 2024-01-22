@@ -119,18 +119,13 @@ export const GameContainer = ({
   else
     return (
       <div className="flex flex-col items-center text-center">
-        <h2 className="text-xl">{joke.setup}</h2>
-        <h3 className="text-lg">
+        <h2 className="text-2xl m-3">{joke.setup}</h2>
+        <h3 className="text-xl">
           Lives:{" "}
           {Array.from({ length: lives }, (_, i) => (
             <span key={i}>❤️</span>
           ))}
         </h3>
-        <JokeGrid
-          formattedPunchline={joke.formattedPunchline}
-          letters={letters}
-          gameState={gameState}
-        />
         <div className="flex items-center">
           <p className="text-md font-semibold">{feedbackMsg}</p>
         </div>
@@ -144,6 +139,12 @@ export const GameContainer = ({
           setLives={setLives}
           setFeedbackMsg={setFeedbackMsg}
         />
+        <JokeGrid
+          formattedPunchline={joke.formattedPunchline}
+          letters={letters}
+          gameState={gameState}
+        />
+
         {/* <div className="flex flex-col items-center">
           <h2 className="text-xl">Debug</h2>
           <div>Game State: {gameState}</div>
