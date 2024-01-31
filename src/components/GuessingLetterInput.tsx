@@ -65,7 +65,7 @@ export const GuessingLetterInput: React.FC<GuessingLetterInputProps> = ({
   return (
     <div className="flex flex-col text-center items-center">
       <button
-        className="m-1 p-1 border-2 border-gray-300 text-center text-lg w-fit rounded-md"
+        className="m-1 p-1 border-2 border-gray-600 text-center text-lg w-fit rounded-md shadow-md"
         onClick={() => {
           setGameState("guessingPunchline");
         }}
@@ -90,11 +90,11 @@ export const GuessingLetterInput: React.FC<GuessingLetterInputProps> = ({
               }
             }
           }}
-          className="m-1 p-1 border-2 border-gray-300 w-10 text-center rounded-md"
+          className="m-1 p-1 border-2 border-gray-600 w-10 text-center rounded-md shadow-md"
         />
         <button
           ref={submitButtonRef}
-          className="m-1 p-1 border-2 border-gray-300 text-center text-lg w-fit rounded-md"
+          className="m-1 p-1 border-2 border-gray-600 text-center text-lg w-fit rounded-md shadow-md"
           onClick={() => {
             if (!letters.includes(letterGuess[0]) && letterGuess[0] !== "") {
               checkLetter(letterGuess[0]);

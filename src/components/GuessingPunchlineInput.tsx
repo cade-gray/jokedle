@@ -52,7 +52,7 @@ export const GuessingPunchlineInput: React.FC<GuessingPunchlineInpuProps> = ({
   return (
     <div className="flex flex-col text-center items-center">
       <button
-        className="m-1 p-1 border-2 border-gray-300 text-center text-lg w-fit rounded-md"
+        className="m-1 p-1 border-2 border-gray-600 text-center text-lg w-fit rounded-md shadow-md"
         onClick={() => {
           setGameState("guessingLetter");
         }}
@@ -68,12 +68,12 @@ export const GuessingPunchlineInput: React.FC<GuessingPunchlineInpuProps> = ({
             const value = e.target.value.toUpperCase();
             handleInputChange(value);
           }}
-          className="m-1 p-1 border-2 border-gray-300 text-center rounded-md w-96"
+          className="m-1 p-1 border-2 border-gray-600 text-center rounded-md w-96 shadow-md"
         />
         <button
           ref={submitButtonRef}
           onClick={() => evaluatePunchlineGuess()}
-          className="m-1 p-1 border-2 border-gray-300 text-center text-lg w-fit rounded-md"
+          className="m-1 p-1 border-2 border-gray-600 text-center text-lg w-fit rounded-md shadow-md"
         >
           Submit
         </button>
