@@ -17,10 +17,12 @@ export const JokeGrid: React.FC<{
           <div
             key={index}
             className={`${twGridDefaults} ${
-              char === " " || !/^[a-zA-Z]$/.test(char)
-                ? "bg-gray-400/20 border border-gray-600/20"
-                : letters.includes(char.toUpperCase())
-                ? "bg-green-500 border border-gray-600"
+              char === " "
+                ? "bg-gray-600 border border-gray-600/20"
+                : /^[a-zA-Z]$/.test(char)
+                ? letters.includes(char.toUpperCase())
+                  ? "bg-green-500 border border-gray-600"
+                  : "bg-gray-100 border border-gray-600"
                 : "bg-gray-400 border border-gray-600"
             }`}
           >
@@ -37,8 +39,8 @@ export const JokeGrid: React.FC<{
           <div
             key={index}
             className={`${twGridDefaults} ${
-              char === " " || !/^[a-zA-Z]$/.test(char)
-                ? "bg-gray-400/20 border border-gray-600/20"
+              char === " "
+                ? "bg-gray-600 border border-gray-600/20"
                 : "bg-green-500 border border-gray-600"
             }`}
           >
@@ -59,7 +61,7 @@ export const JokeGrid: React.FC<{
                 : /^[a-zA-Z]$/.test(char)
                 ? letters.includes(char.toUpperCase())
                   ? "bg-green-500 border border-gray-600"
-                  : "bg-gray-400/20 border border-gray-600"
+                  : "bg-gray-100 border border-gray-600"
                 : "bg-gray-400 border border-gray-600"
             }`}
           >
