@@ -35,6 +35,7 @@ function App() {
   return (
     <div className="flex flex-col items-center max-w-screen-lg mx-auto">
       <h1 className="text-4xl font-bold">Jokedle</h1>
+      <h2 className="text-lg font-bold">Guess The Punchline</h2>
       <GameContainer
         gameState={gameState}
         setGameState={setGameState}
