@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+:root {
+  background-color: #5ce7ff;
+}
+button {
+  background-color: #f7ff62;
+}
