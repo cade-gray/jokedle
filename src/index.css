@@ -1,9 +1,25 @@
+@import url("https://fonts.googleapis.com/css2?family=Climate+Crisis:YEAR@1998&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Teko:wght@600&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 :root {
   background-color: #5ce7ff;
 }
+.font-climatecrisis-regular {
+  font-family: "Climate Crisis", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: "YEAR" 1998;
+}
+.font-teko-semibold {
+  font-family: "Teko", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+
 button {
   background-color: #f7ff62;
 }

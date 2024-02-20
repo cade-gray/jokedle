@@ -50,7 +50,7 @@ export const GuessingPunchlineInput: React.FC<GuessingPunchlineInpuProps> = ({
 
   const submitButtonRef = React.useRef<HTMLButtonElement | null>(null);
   return (
-    <div className="flex flex-col text-center items-center">
+    <div className="flex flex-col text-center items-center font-teko-semibold">
       <button
         className="m-1 p-1 border-2 border-gray-600 text-center text-lg w-fit rounded-md shadow-md"
         onClick={() => {

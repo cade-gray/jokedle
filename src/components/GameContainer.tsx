@@ -104,30 +104,35 @@ export const GameContainer = ({
       );
     } else if (gameState === "completeWin") {
       return (
-        <p className="text-2xl font-extrabold text-green-600">
+        <p className="text-2xl font-extrabold text-green-600 font-teko-semibold">
           Nice job! You have solved the punchline!
         </p>
       );
     } else if (gameState === "completeLoss") {
-      return <p className="text-2xl font-extrabold text-red-600">Game Over!</p>;
+      return (
+        <p className="text-2xl font-extrabold text-red-600 font-teko-semibold">
+          Game Over!
+        </p>
+      );
     } else {
       return <div>Game State Error</div>;
     }
   };
 
-  if (gameState === "loading") return <div>Loading Joke of the day...</div>;
+  if (gameState === "loading")
+    return <div className="font-teko-semibold">Loading Joke of the day...</div>;
   else
     return (
       <div className="flex flex-col items-center text-center">
-        <h2 className="text-2xl m-3">{joke.setup}</h2>
-        <h3 className="text-xl font-semibold">
+        <h2 className="text-2xl m-3 font-teko-semibold">{joke.setup}</h2>
+        <h3 className="text-xl font-teko-semibold">
           Lives:{" "}
           {Array.from({ length: lives }, (_, i) => (
             <span key={i}>❤️</span>
           ))}
         </h3>
-        <h3 className="text-xl font-semibold">Letters Guessed:</h3>
-        <div className="flex flex-wrap justify-center">
+        <h3 className="text-xl font-teko-semibold">Letters Guessed:</h3>
+        <div className="flex flex-wrap justify-center font-teko-semibold">
           {letters.map((letter, index) => (
             <span
               key={index}
@@ -138,7 +143,7 @@ export const GameContainer = ({
           ))}
         </div>
         <div className="flex items-center">
-          <p className="text-md font-semibold">{feedbackMsg}</p>
+          <p className="text-md font-teko-semibold">{feedbackMsg}</p>
         </div>
         <InputContainer
           gameState={gameState}
