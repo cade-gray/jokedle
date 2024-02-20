@@ -120,12 +120,23 @@ export const GameContainer = ({
     return (
       <div className="flex flex-col items-center text-center">
         <h2 className="text-2xl m-3">{joke.setup}</h2>
-        <h3 className="text-xl">
+        <h3 className="text-xl font-semibold">
           Lives:{" "}
           {Array.from({ length: lives }, (_, i) => (
             <span key={i}>❤️</span>
           ))}
         </h3>
+        <h3 className="text-xl font-semibold">Letters Guessed:</h3>
+        <div className="flex flex-wrap justify-center">
+          {letters.map((letter, index) => (
+            <span
+              key={index}
+              className="m-1 p-1 text-xl font-semibold border border-gray-600 bg-gray-200 rounded-md shadow-md"
+            >
+              {letter}
+            </span>
+          ))}
+        </div>
         <div className="flex items-center">
           <p className="text-md font-semibold">{feedbackMsg}</p>
         </div>
