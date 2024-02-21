@@ -136,7 +136,7 @@ export const GameContainer = ({
           {letters.map((letter, index) => (
             <span
               key={index}
-              className="m-1 p-1 text-xl font-semibold border border-gray-600 bg-gray-200 rounded-md shadow-md"
+              className="m-1 p-1 text-xl font-semibold border border-gray-600 rounded-md shadow-lg"
             >
               {letter}
             </span>
