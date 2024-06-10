@@ -81,11 +81,11 @@ function App() {
         joke={joke}
       />
     ) : appState === "howTo" ? (
-      "<HowToContainer />"
+      "Feature Coming Soon!"
     ) : appState === "jokeList" ? (
-      "<JokeListContainer/>"
+      "Feature Coming Soon!"
     ) : (
-      "<JokeSubmissionContainer/>"
+      "Feature Coming Soon!"
     )}
   </div>
 );
