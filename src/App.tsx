@@ -25,6 +25,10 @@ function App() {
     | "completeWin"
     | "completeLoss"
   >("loading");
+  const [letters, setLetters] = React.useState<string[]>([]);
+  const [lives, setLives] = React.useState<number>(3);
+  const [punchline, setPunchline] = React.useState<string>("");
+  const [feedbackMsg, setFeedbackMsg] = React.useState<string>("");
   
 
   useEffect(() => {
@@ -81,6 +85,14 @@ function App() {
         gameState={gameState}
         setGameState={setGameState}
         joke={joke}
+        letters={letters}
+        setLetters={setLetters}
+        lives={lives}
+        setLives={setLives}
+        punchline={punchline}
+        setPunchline={setPunchline}
+        feedbackMsg={feedbackMsg}
+        setFeedbackMsg={setFeedbackMsg}
       />
     ) : appState === "howTo" ? (
       "Feature Coming Soon!"

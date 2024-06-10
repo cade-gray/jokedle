@@ -9,25 +9,38 @@ export const GameContainer = ({
   gameState,
   setGameState,
   joke,
-}: {
-  gameState: string;
-  setGameState: React.Dispatch<
-    React.SetStateAction<
-      | "loading"
-      | "firstPick"
-      | "guessingLetter"
-      | "guessingPunchline"
-      | "completeWin"
-      | "completeLoss"
-    >
-  >;
+  letters,
+  setLetters,
+  punchline,
+  setPunchline,
+  lives,
+  setLives,
+  feedbackMsg,
+  setFeedbackMsg,
+  }: {
+    gameState: string;
+    setGameState: React.Dispatch<
+      React.SetStateAction<
+        | "loading"
+        | "firstPick"
+        | "guessingLetter"
+        | "guessingPunchline"
+        | "completeWin"
+        | "completeLoss"
+      >
+    >;
+  letters: string[];
+  setLetters: React.Dispatch<React.SetStateAction<string[]>>;
+  punchline: string;
+  setPunchline: React.Dispatch<React.SetStateAction<string>>;
+  lives: number;
+  setLives: React.Dispatch<React.SetStateAction<number>>;
+  feedbackMsg: string;
+  setFeedbackMsg: React.Dispatch<React.SetStateAction<string>>;
   joke: Joke;
 }) => {
   // Letters that have been guessed
-  const [letters, setLetters] = React.useState<string[]>([]);
-  const [lives, setLives] = React.useState<number>(3);
-  const [punchline, setPunchline] = React.useState<string>("");
-  const [feedbackMsg, setFeedbackMsg] = React.useState<string>("");
+  
 
   useEffect(() => {
     setPunchline(joke.punchline.replace(/[^a-zA-Z0-9]/g, "").toUpperCase());
