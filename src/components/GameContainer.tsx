@@ -36,10 +36,10 @@ export const GameContainer = ({
     const allCharsInLetters = punchline
       .split("")
       .every((char) => letters.includes(char));
-    if (allCharsInLetters && gameState !== "loading") {
+    if (allCharsInLetters && punchline !== "") { // Empty string check to prevent win when switching states.
       setGameState("completeWin");
     }
-  }, [punchline, letters, setGameState]);
+  }, [punchline, letters]);
   // Logic for InputContainer.  Determines which input to show based on gameState.
   const InputContainer = ({
     gameState,
