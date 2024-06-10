@@ -46,7 +46,7 @@ function App() {
   <div className="flex flex-col items-center max-w-screen-lg mx-auto">
     <h1 className="text-4xl font-climatecrisis-regular">Jokedle</h1>
     <h2 className="text-lg font-teko-semibold">Guess The Punchline</h2>
-    <div className="flex justify-between w-1/2">
+    {/* <div className="flex justify-between w-1/2">
       <button
         className="p-2 border border-black rounded"
         onClick={() => setAppState("inGame")}
@@ -71,7 +71,7 @@ function App() {
       >
         Submit A Joke
       </button>
-    </div>
+    </div> */}
     {appState === "loading" ? (
       "<LoadingContainer />"
     ) : appState === "inGame" ? (
