@@ -42,36 +42,38 @@ function App() {
       });
   }, []);
 
+  const headerButtonClasses = "m-1 p-1 border-2 border-gray-600 text-center text-lg w-20 rounded-md shadow-md";
+
   return (
-  <div className="flex flex-col items-center max-w-screen-lg mx-auto">
+  <div className="flex flex-col items-center max-w-screen-lg mx-auto font-teko-semibold">
     <h1 className="text-4xl font-climatecrisis-regular">Jokedle</h1>
     <h2 className="text-lg font-teko-semibold">Guess The Punchline</h2>
-    {/* <div className="flex justify-between w-1/2">
+    <div className="flex justify-between">
       <button
-        className="p-2 border border-black rounded"
+        className={headerButtonClasses}
         onClick={() => setAppState("inGame")}
       >
         Play
       </button>
       <button
-        className="p-2 border border-black rounded"
+        className={headerButtonClasses}
         onClick={() => setAppState("howTo")}
       >
         How To Play
       </button>
       <button
-        className="p-2 border border-black rounded"
+        className={headerButtonClasses}
         onClick={() => setAppState("jokeList")}
       >
         Joke List
       </button>
       <button
-        className="p-2 border border-black rounded"
+        className={headerButtonClasses}
         onClick={() => setAppState("jokeSubmission")}
       >
         Submit A Joke
       </button>
-    </div> */}
+    </div>
     {appState === "loading" ? (
       "<LoadingContainer />"
     ) : appState === "inGame" ? (
