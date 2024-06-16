@@ -76,7 +76,7 @@ function App() {
         </button>
       </div>
       {appState === "loading" ? (
-        "<LoadingContainer />"
+        <div className="text-lg text-center">Loading...</div>
       ) : appState === "inGame" ? (
         <GameContainer
           gameState={gameState}
