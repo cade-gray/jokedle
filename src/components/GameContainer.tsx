@@ -17,18 +17,18 @@ export const GameContainer = ({
   setLives,
   feedbackMsg,
   setFeedbackMsg,
-  }: {
-    gameState: string;
-    setGameState: React.Dispatch<
-      React.SetStateAction<
-        | "loading"
-        | "firstPick"
-        | "guessingLetter"
-        | "guessingPunchline"
-        | "completeWin"
-        | "completeLoss"
-      >
-    >;
+}: {
+  gameState: string;
+  setGameState: React.Dispatch<
+    React.SetStateAction<
+      | "loading"
+      | "firstPick"
+      | "guessingLetter"
+      | "guessingPunchline"
+      | "completeWin"
+      | "completeLoss"
+    >
+  >;
   letters: string[];
   setLetters: React.Dispatch<React.SetStateAction<string[]>>;
   punchline: string;
@@ -40,7 +40,6 @@ export const GameContainer = ({
   joke: Joke;
 }) => {
   // Letters that have been guessed
-  
 
   useEffect(() => {
     setPunchline(joke.punchline.replace(/[^a-zA-Z0-9]/g, "").toUpperCase());
@@ -49,7 +48,8 @@ export const GameContainer = ({
     const allCharsInLetters = punchline
       .split("")
       .every((char) => letters.includes(char));
-    if (allCharsInLetters && punchline !== "") { // Empty string check to prevent win when switching states.
+    if (allCharsInLetters && punchline !== "") {
+      // Empty string check to prevent win when switching states.
       setGameState("completeWin");
     }
   }, [punchline, letters]);
@@ -137,6 +137,7 @@ export const GameContainer = ({
   else
     return (
       <div className="flex flex-col items-center text-center">
+        <h1 className="text-lg">Joke of the day: #{joke.jokeid}</h1>
         <h2 className="text-2xl m-3 font-teko-semibold">{joke.setup}</h2>
         <h3 className="text-xl font-teko-semibold">
           Lives:{" "}
