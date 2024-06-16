@@ -21,6 +21,9 @@
   font-style: normal;
   color: #222222;
 }
+.border-jokedle {
+  border-color: #222;
+}
 @media (prefers-color-scheme: dark) {
   :root {
     background-color: #222222;
@@ -39,6 +42,9 @@
     font-weight: 600;
     font-style: normal;
     color: #fafafa;
+  }
+  .border-jokedle {
+    border-color: #fafafa;
   }
   input {
     background-color: #272727;
