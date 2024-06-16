@@ -9,7 +9,7 @@ export const JokeGrid: React.FC<{
   );
   const twContainerDefaults = "grid grid-cols-12 grid-rows-6 p-2";
   const twGridDefaults =
-    "m-1 p-1 flex items-center justify-center text-2xl font-semibold w-7 h-7 rounded-md shadow-md";
+    "m-1 p-1 flex items-center justify-center text-2xl w-7 h-7 rounded-md shadow-md text-[#222222]";
   if (gameState === "completeLoss") {
     return (
       <div className={twContainerDefaults}>
