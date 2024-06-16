@@ -78,7 +78,7 @@ function App() {
         </button>
       </div>
       {appState === "loading" ? (
-        "<div>Loading.../div>"
+        <div className="text-lg text-center">Loading...</div>
       ) : appState === "inGame" ? (
         <GameContainer
           gameState={gameState}
@@ -100,6 +100,22 @@ function App() {
       ) : (
         "Feature Coming Soon!"
       )}
+      <div className="text-center">
+        <p>
+          Developed by{" "}
+          <a className="text-[#4ac4da]" href="https://cadegray.dev">
+            Cade Gray
+          </a>
+        </p>
+        <p>
+          <a
+            className="text-[#4ac4da]"
+            href="https://github.com/cade-gray/jokedle-web"
+          >
+            Source Code
+          </a>
+        </p>
+      </div>
     </div>
   );
 }
