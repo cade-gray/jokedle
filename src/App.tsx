@@ -6,6 +6,7 @@ import { Joke } from "./interfaces/Joke";
 import { HowToContainer } from "./components/HowToContainer";
 function App() {
   const [joke, setJoke] = React.useState<Joke>({
+    jokeid: 0,
     setup: "",
     punchline: "",
     formattedPunchline: "",
@@ -33,6 +34,7 @@ function App() {
       .then((data) => {
         const jokeBody = data[0];
         setJoke({
+          jokeid: jokeBody.jokeId,
           setup: jokeBody.setup,
           punchline: jokeBody.punchline,
           formattedPunchline: jokeBody.formattedPunchline,
@@ -76,7 +78,7 @@ function App() {
         </button>
       </div>
       {appState === "loading" ? (
-        "<LoadingContainer />"
+        "<div>Loading.../div>"
       ) : appState === "inGame" ? (
         <GameContainer
           gameState={gameState}
