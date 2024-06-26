@@ -1,4 +1,4 @@
-# Jokedle ReactJS Web Front End
+# Jokedle
 
 ## Developed by Cade Gray
 
