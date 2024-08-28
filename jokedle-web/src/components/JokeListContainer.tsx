@@ -55,7 +55,7 @@ export const JokeListContainer = ({
     }, []);
     return (
         <div className="flex flex-col m-3 p-3 border border-jokedle rounded-md shadow-md shadow-[#4ac4da]">
-            <h1 className="text-xl font-teko-semibold">Joke List</h1>
+            <h1 className="text-3xl text-center font-teko-semibold">Joke List</h1>
             <div className="flex flex-col">
                 {jokes.map((joke) => (
                     <div key={joke.jokeid} className="flex flex-col m-2 p-2 shadow-md border border-jokedle rounded-md hover:shadow-[#4ac4da]">
