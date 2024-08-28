@@ -4,6 +4,7 @@ import React from "react";
 import { GameContainer } from "./components/GameContainer";
 import { Joke } from "./interfaces/Joke";
 import { HowToContainer } from "./components/HowToContainer";
+import { JokeListContainer } from "./components/JokeListContainer";
 function App() {
   const [joke, setJoke] = React.useState<Joke>({
     jokeid: 0,
@@ -25,6 +26,7 @@ function App() {
   >("loading");
   const [letters, setLetters] = React.useState<string[]>([]);
   const [lives, setLives] = React.useState<number>(3);
+  // Why is punchline here if it is in the joke interface?
   const [punchline, setPunchline] = React.useState<string>("");
   const [feedbackMsg, setFeedbackMsg] = React.useState<string>("");
 
@@ -94,9 +96,18 @@ function App() {
           setFeedbackMsg={setFeedbackMsg}
         />
       ) : appState === "howTo" ? (
-        <HowToContainer />
+        <HowToContainer
+
+        />
       ) : appState === "jokeList" ? (
-        "Feature Coming Soon!"
+        <JokeListContainer
+          setGameState={setGameState}
+          setJoke={setJoke}
+          setLetters={setLetters}
+          setLives={setLives}
+          setFeedbackMsg={setFeedbackMsg}
+          setAppState={setAppState}
+        />
       ) : (
         "Feature Coming Soon!"
       )}
