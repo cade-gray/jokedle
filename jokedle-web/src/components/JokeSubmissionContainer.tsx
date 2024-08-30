@@ -15,7 +15,7 @@ export const JokeSubmissionContainer = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:3030/joke/submission', {
+      const response = await fetch('https://api.cadegray.dev/joke/submission', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
