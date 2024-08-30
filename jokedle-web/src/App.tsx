@@ -5,6 +5,7 @@ import { GameContainer } from "./components/GameContainer";
 import { Joke } from "./interfaces/Joke";
 import { HowToContainer } from "./components/HowToContainer";
 import { JokeListContainer } from "./components/JokeListContainer";
+import { JokeSubmissionContainer } from "./components/JokeSubmissionContainer";
 function App() {
   const [joke, setJoke] = React.useState<Joke>({
     jokeid: 0,
@@ -96,9 +97,7 @@ function App() {
           setFeedbackMsg={setFeedbackMsg}
         />
       ) : appState === "howTo" ? (
-        <HowToContainer
-
-        />
+        <HowToContainer/>
       ) : appState === "jokeList" ? (
         <JokeListContainer
           setGameState={setGameState}
@@ -108,9 +107,9 @@ function App() {
           setFeedbackMsg={setFeedbackMsg}
           setAppState={setAppState}
         />
-      ) : (
-        "Feature Coming Soon!"
-      )}
+      ) : appState === "jokeSubmission" ? (
+        <JokeSubmissionContainer />
+      ): null}
       <div className="text-center">
         <p>
           Developed by{" "}
