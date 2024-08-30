@@ -57,6 +57,7 @@ export const JokeListContainer = ({
         <div className="flex flex-col m-3 p-3 border border-jokedle rounded-md shadow-md shadow-[#4ac4da]">
             <h1 className="text-3xl text-center font-teko-semibold">Joke List</h1>
             <div className="flex flex-col">
+                {jokes.length === 0 && <p>Loading Jokes...</p>}
                 {jokes.map((joke) => (
                     <div key={joke.jokeid} className="flex flex-col m-2 p-2 shadow-md border border-jokedle rounded-md hover:shadow-[#4ac4da]">
                         <button className="text-lg font-teko-semibold bg-transparent" onClick={()=>changeJoke(joke.jokeid)}>#{joke.jokeid}: {joke.setup}</button>
