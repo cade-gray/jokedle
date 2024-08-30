@@ -1,9 +1,5 @@
-import { useEffect } from "react";
-
 export const HowToContainer = () => {
-  // Letters that have been guessed
 
-  useEffect(() => {}, []);
   return (
     <div className="flex flex-col m-3 p-3 border border-jokedle rounded-md shadow-md shadow-[#4ac4da]">
       <h1 className="text-3xl text-center">How to Play</h1>
