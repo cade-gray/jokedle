@@ -24,6 +24,10 @@
 .border-jokedle {
   border-color: #222;
 }
+button {
+  background-color: #4ac4da;
+  color: #222;
+}
 @media (prefers-color-scheme: dark) {
   :root {
     background-color: #222222;
@@ -50,9 +54,10 @@
     background-color: #272727;
     color: #fafafa;
   }
+  textarea {
+    background-color: #222222;
+    color: #fafafa;
+  }
 }
 
-button {
-  background-color: #4ac4da;
-  color: #222;
-}
+
