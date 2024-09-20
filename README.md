@@ -2,8 +2,6 @@
 
 ## Developed by Cade Gray
 
-## Version 1.0.0
-
 ## Game Rules
 
 - 1 Random joke daily
