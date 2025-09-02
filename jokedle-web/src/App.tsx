@@ -97,7 +97,7 @@ function App() {
           setFeedbackMsg={setFeedbackMsg}
         />
       ) : appState === "howTo" ? (
-        <HowToContainer/>
+        <HowToContainer />
       ) : appState === "jokeList" ? (
         <JokeListContainer
           setGameState={setGameState}
@@ -109,10 +109,10 @@ function App() {
         />
       ) : appState === "jokeSubmission" ? (
         <JokeSubmissionContainer />
-      ): null}
+      ) : null}
       <div className="text-center">
         <p>
-          Developed by{" "}
+          Made with ❤️ by{" "}
           <a className="text-[#4ac4da]" href="https://cadegray.dev">
             Cade Gray
           </a>
