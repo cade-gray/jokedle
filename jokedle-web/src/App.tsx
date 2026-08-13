@@ -32,7 +32,7 @@ function App() {
   const [feedbackMsg, setFeedbackMsg] = React.useState<string>("");
 
   useEffect(() => {
-    fetch("https://api.cadegray.dev/joke")
+    fetch("https://jokedle-api.cadegray.dev/joke")
       .then((response) => response.json())
       .then((data) => {
         const jokeBody = data[0];

@@ -31,7 +31,7 @@ export const JokeListContainer = ({
 
     const changeJoke = (jokeId: number) => {
         console.log(jokeId);
-        fetch(`https://api.cadegray.dev/joke/id/${jokeId}`)
+        fetch(`https://jokedle-api.cadegray.dev/joke/id/${jokeId}`)
             .then((response) => response.json())
             .then((data) => {
                 setJoke({
@@ -49,7 +49,7 @@ export const JokeListContainer = ({
     }
 
     useEffect(() => {
-        fetch("https://api.cadegray.dev/joke/all/weblist")
+        fetch("https://jokedle-api.cadegray.dev/joke/all/weblist")
             .then((response) => response.json())
             .then((data) => setJokes(data));
     }, []);

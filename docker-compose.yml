@@ -1,0 +1,6 @@
+services:
+  jokedle-web:
+    image: ghcr.io/cade-gray/jokedle-web:latest
+    restart: unless-stopped
+    ports:
+      - "3004:80"

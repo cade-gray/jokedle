@@ -1,0 +1,13 @@
+services:
+  jokedle-web-dev:
+    build:
+      context: ./jokedle-web
+      target: dev
+    ports:
+      # host 5174 so this can run alongside a host-native `npm run dev` on 5173
+      - "5174:5173"
+    volumes:
+      # live source for hot reload
+      - ./jokedle-web:/app
+      # keep the image's node_modules instead of the host's
+      - /app/node_modules

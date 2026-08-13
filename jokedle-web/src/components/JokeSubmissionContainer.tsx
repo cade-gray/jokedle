@@ -9,13 +9,15 @@ export const JokeSubmissionContainer = () => {
     event.preventDefault();
 
     const Joke = {
-      setup: setup,
-      punchline: punchline,
-      source: source,
+      joke: {
+        setup: setup,
+        punchline: punchline,
+        source: source,
+      },
     };
 
     try {
-      const response = await fetch('https://api.cadegray.dev/joke/submission', {
+      const response = await fetch('https://jokedle-api.cadegray.dev/joke/submission', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
