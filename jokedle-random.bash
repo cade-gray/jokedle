@@ -1,18 +1,24 @@
 #!/bin/bash
+#
+# Sets the joke of the day to a random joke.
+#
+# The API picks the random number itself now (randomTf), so the old
+# GET /joke/count lookup and the shell-side $RANDOM math are gone.
+set -euo pipefail
 
-# Hit the endpoint with curl and save the response
-response=$(curl -s https://api.cadegray.dev/joke/count)
+API="${JOKEDLE_API:-https://jokedle-api.cadegray.dev}"
+TOKEN="${JOKEDLE_TOKEN:-<TOKEN>}"
+API_USER="${JOKEDLE_USER:-<USER>}"
 
-# Parse the response with jq and extract the count number
-count=$(echo $response | jq '.[0].count')
-echo "Count: $count"
+response=$(curl -sS -X POST "$API/joke/sequence" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "X-User: $API_USER" \
+  -d '{"randomTf": true}')
 
-# Generate a random number between 1 and count
-random_number=$((1 + RANDOM % count))
-
-echo "Random number: $random_number"
-
-curl -X POST https://api.cadegray.dev/joke/updatesequence \
--H "Content-Type: application/json" \
--H "Authorization: Bearer <TOKEN>" \
--d '{"user": "<USER>", "sequenceNbr": '$random_number'}'
+if [ "$(echo "$response" | jq -r '.success // false')" = "true" ]; then
+  echo "Sequence set to random joke $(echo "$response" | jq -r '.sequenceNbr')"
+else
+  echo "Sequence update failed: $(echo "$response" | jq -r '.error // .')" >&2
+  exit 1
+fi

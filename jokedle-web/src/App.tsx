@@ -8,7 +8,7 @@ import { JokeListContainer } from "./components/JokeListContainer";
 import { JokeSubmissionContainer } from "./components/JokeSubmissionContainer";
 function App() {
   const [joke, setJoke] = React.useState<Joke>({
-    jokeid: 0,
+    jokeId: 0,
     setup: "",
     punchline: "",
     formattedPunchline: "",
@@ -37,7 +37,7 @@ function App() {
       .then((data) => {
         const jokeBody = data[0];
         setJoke({
-          jokeid: jokeBody.jokeId,
+          jokeId: jokeBody.jokeId,
           setup: jokeBody.setup,
           punchline: jokeBody.punchline,
           formattedPunchline: jokeBody.formattedPunchline,

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Joke } from "../interfaces/Joke";
+import { Joke, JokeListItem } from "../interfaces/Joke";
 import React from "react";
 
 export const JokeListContainer = ({
@@ -27,7 +27,7 @@ export const JokeListContainer = ({
     setAppState: React.Dispatch<React.SetStateAction<"loading" | "inGame" | "howTo" | "jokeList" | "jokeSubmission">>;
 }) => {
     // Array of jokes pulled from api
-    const [jokes, setJokes] = React.useState<Joke[]>([]);
+    const [jokes, setJokes] = React.useState<JokeListItem[]>([]);
 
     const changeJoke = (jokeId: number) => {
         console.log(jokeId);
@@ -35,7 +35,7 @@ export const JokeListContainer = ({
             .then((response) => response.json())
             .then((data) => {
                 setJoke({
-                    jokeid: data.jokeId,
+                    jokeId: data.jokeId,
                     setup: data.setup,
                     punchline: data.punchline,
                     formattedPunchline: data.formattedPunchline,
@@ -59,8 +59,8 @@ export const JokeListContainer = ({
             <div className="flex flex-col">
                 {jokes.length === 0 && <p>Loading Jokes...</p>}
                 {jokes.map((joke) => (
-                    <div key={joke.jokeid} className="flex flex-col m-2 p-2 shadow-md border border-jokedle rounded-md hover:shadow-[#4ac4da]">
-                        <button className="text-lg font-teko-semibold bg-transparent" onClick={()=>changeJoke(joke.jokeid)}>#{joke.jokeid}: {joke.setup}</button>
+                    <div key={joke.jokeId} className="flex flex-col m-2 p-2 shadow-md border border-jokedle rounded-md hover:shadow-[#4ac4da]">
+                        <button className="text-lg font-teko-semibold bg-transparent" onClick={()=>changeJoke(joke.jokeId)}>#{joke.jokeId}: {joke.setup}</button>
                     </div>
                 ))}
             </div>

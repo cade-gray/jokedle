@@ -137,7 +137,7 @@ export const GameContainer = ({
   else
     return (
       <div className="flex flex-col items-center text-center">
-        <h1 className="text-lg">#{joke.jokeid}</h1>
+        <h1 className="text-lg">#{joke.jokeId}</h1>
         <h2 className="text-2xl m-3 font-teko-semibold">{joke.setup}</h2>
         <h3 className="text-xl font-teko-semibold">
           Lives:{" "}
