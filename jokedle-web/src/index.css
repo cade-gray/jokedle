@@ -1,63 +1,573 @@
-@import url("https://fonts.googleapis.com/css2?family=Climate+Crisis:YEAR@1998&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Teko:wght@600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Climate+Crisis:YEAR@1998&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Teko:wght@400;500;600&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-:root {
-  background-color: #fafafa;
-}
-.font-climatecrisis-regular {
-  font-family: "Climate Crisis", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  font-variation-settings: "YEAR" 1998;
-  color: #222222;
-}
-.font-teko-semibold {
-  font-family: "Teko", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 600;
-  font-style: normal;
-  color: #222222;
-}
-.border-jokedle {
-  border-color: #222;
-}
-button {
-  background-color: #4ac4da;
-  color: #222;
-}
-@media (prefers-color-scheme: dark) {
+
+@layer base {
   :root {
-    background-color: #222222;
+    color-scheme: light;
+
+    --bg: #f4f6f6;
+    --surface: #ffffff;
+    --surface-2: #eceff0;
+
+    --ink: #1b1d1e;
+    --ink-2: #566063;
+    --ink-3: #6b7577;
+
+    --line: #dde2e3;
+    --line-strong: #c3cbcd;
+
+    /* The raw cyan is a FILL, never text on white — as text it is only 1.9:1.
+       --brand-ink is the darkened form used for links and small brand text. */
+    --brand: #4ac4da;
+    --brand-ink: #277282;
+    --brand-soft: #e4f5f8;
+    --on-brand: #12252a;
+
+    --good: #45b37e;
+    --good-ink: #1f7a52;
+    --good-soft: #e3f4ec;
+    --bad: #d8574c;
+    --bad-ink: #b8362c;
+    --bad-soft: #fbe9e7;
+
+    --tile: #ffffff;
+    --tile-line: #c9d1d3;
+
+    --shadow: 0 1px 2px rgb(27 29 30 / 0.05), 0 12px 30px -20px rgb(27 29 30 / 0.5);
   }
-  .font-climatecrisis-regular {
-    font-family: "Climate Crisis", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-    font-variation-settings: "YEAR" 1998;
-    color: #ffffff;
+
+  .dark {
+    color-scheme: dark;
+
+    --bg: #141718;
+    --surface: #1d2122;
+    --surface-2: #272c2d;
+
+    --ink: #eef1f1;
+    --ink-2: #a7b1b3;
+    --ink-3: #8b9597;
+
+    --line: #313738;
+    --line-strong: #414849;
+
+    --brand: #4ac4da;
+    --brand-ink: #7dd5e4;
+    --brand-soft: #10353d;
+    --on-brand: #0d2126;
+
+    --good: #57c08c;
+    --good-ink: #7fd3a6;
+    --good-soft: #163325;
+    --bad: #e8776c;
+    --bad-ink: #f0918a;
+    --bad-soft: #3a1a16;
+
+    --tile: #272c2d;
+    --tile-line: #3a4142;
+
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 14px 34px -22px rgb(0 0 0 / 0.95);
   }
-  .font-teko-semibold {
-    font-family: "Teko", sans-serif;
-    font-optical-sizing: auto;
+
+  html {
+    background-color: var(--bg);
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: "Karla", ui-sans-serif, system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    transition: background-color 320ms ease, color 320ms ease;
+  }
+
+  /* One focus treatment for everything. Never remove it. */
+  :focus-visible {
+    outline: 3px solid var(--brand);
+    outline-offset: 2px;
+  }
+
+  a {
+    color: var(--brand-ink);
     font-weight: 600;
-    font-style: normal;
-    color: #fafafa;
+    text-underline-offset: 3px;
   }
-  .border-jokedle {
-    border-color: #fafafa;
-  }
-  input {
-    background-color: #272727;
-    color: #fafafa;
-  }
-  textarea {
-    background-color: #222222;
-    color: #fafafa;
+
+  a:hover {
+    text-decoration-thickness: 2px;
   }
 }
 
+@layer components {
+  .card {
+    background-color: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 22px 24px;
+  }
 
+  /* Buttons ---------------------------------------------------------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 22px;
+    border: 1px solid transparent;
+    border-radius: 11px;
+    cursor: pointer;
+    font-family: "Teko", sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    transition: transform 130ms ease, filter 180ms ease, background-color 180ms ease,
+      border-color 180ms ease;
+  }
+
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  .btn-primary {
+    background-color: var(--brand);
+    color: var(--on-brand);
+    box-shadow: var(--shadow);
+  }
+
+  .btn-primary:hover {
+    filter: brightness(1.06);
+  }
+
+  .btn-ghost {
+    background-color: transparent;
+    border-color: var(--line-strong);
+    color: var(--ink);
+  }
+
+  .btn-ghost:hover {
+    background-color: var(--surface-2);
+    border-color: var(--ink-3);
+  }
+
+  /* Tabs ------------------------------------------------------------- */
+  .tab {
+    position: relative;
+    min-height: 44px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 9px 9px 0 0;
+    background-color: transparent;
+    /* ink-2 rather than ink-3: against the page background (not a white card)
+       ink-3 only reaches 4.4:1, and these are the primary navigation. The
+       selected tab is set apart by the underline as much as by the colour. */
+    color: var(--ink-2);
+    cursor: pointer;
+    font-family: "Teko", sans-serif;
+    font-weight: 600;
+    font-size: 21px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: color 180ms ease, background-color 180ms ease;
+  }
+
+  .tab:hover {
+    color: var(--ink);
+    background-color: var(--surface-2);
+  }
+
+  .tab[aria-selected="true"] {
+    color: var(--ink);
+  }
+
+  .tab[aria-selected="true"]::after {
+    content: "";
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: -1px;
+    height: 3px;
+    border-radius: 3px 3px 0 0;
+    background-color: var(--brand);
+    animation: tab-ink 260ms cubic-bezier(0.2, 0.85, 0.25, 1);
+  }
+
+  /* Segmented control ------------------------------------------------ */
+  .seg {
+    display: inline-flex;
+    gap: 4px;
+    padding: 4px;
+    background-color: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+  }
+
+  .seg-btn {
+    min-height: 44px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 9px;
+    background-color: transparent;
+    color: var(--ink-2);
+    cursor: pointer;
+    font-family: "Teko", sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: background-color 180ms ease, color 180ms ease;
+  }
+
+  .seg-btn[aria-pressed="true"] {
+    background-color: var(--surface);
+    color: var(--ink);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.14);
+  }
+
+  /* Fields ----------------------------------------------------------- */
+  .field {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    background-color: var(--surface);
+    color: var(--ink);
+    font-family: "Karla", sans-serif;
+    font-size: 16px;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+  }
+
+  .field::placeholder {
+    color: var(--ink-3);
+  }
+
+  .field:focus {
+    outline: none;
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgb(74 196 218 / 0.32);
+  }
+
+  /* A single-letter box. */
+  .slot {
+    width: 54px;
+    height: 58px;
+    padding: 0;
+    font-family: "Teko", sans-serif;
+    font-weight: 600;
+    font-size: 30px;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--ink-2);
+    font-family: "Teko", sans-serif;
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  .hint {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: 14px;
+  }
+
+  /* Punchline board -------------------------------------------------- */
+  .tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 42px;
+    border: 1px solid var(--tile-line);
+    border-radius: 7px;
+    background-color: var(--tile);
+    color: var(--ink);
+    font-family: "Teko", sans-serif;
+    font-weight: 600;
+    font-size: 27px;
+    line-height: 1;
+  }
+
+  .tile-found {
+    background-color: var(--good);
+    border-color: var(--good);
+    color: #0e2a1d;
+    animation: tile-flip 440ms cubic-bezier(0.2, 0.8, 0.25, 1) both;
+  }
+
+  /* Shown only once the round is over: a letter the player never found. */
+  .tile-missed {
+    background-color: var(--surface-2);
+    border-color: var(--line-strong);
+    color: var(--ink-3);
+    animation: tile-flip 440ms cubic-bezier(0.2, 0.8, 0.25, 1) both;
+  }
+
+  .tile-hidden::after {
+    content: "";
+    width: 13px;
+    height: 2px;
+    border-radius: 2px;
+    background-color: var(--tile-line);
+  }
+
+  .tile-punct {
+    width: 15px;
+    border-color: transparent;
+    background-color: transparent;
+    color: var(--ink-3);
+    font-size: 24px;
+  }
+
+  /* Guessed-letter chips --------------------------------------------- */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    height: 34px;
+    padding: 0 8px;
+    border-radius: 999px;
+    font-family: "Teko", sans-serif;
+    font-weight: 600;
+    font-size: 19px;
+    animation: pop-in 240ms cubic-bezier(0.2, 0.8, 0.25, 1) both;
+  }
+
+  .chip-hit {
+    background-color: var(--brand-soft);
+    border: 1px solid var(--brand);
+    color: var(--brand-ink);
+  }
+
+  /* Struck through so a miss reads without relying on colour. */
+  .chip-miss {
+    background-color: var(--surface-2);
+    border: 1px solid var(--line);
+    color: var(--ink-3);
+    text-decoration: line-through;
+  }
+
+  /* Joke list row ---------------------------------------------------- */
+  .joke-row {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    width: 100%;
+    min-height: 44px;
+    padding: 13px 16px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background-color: var(--surface);
+    color: var(--ink);
+    text-align: left;
+    cursor: pointer;
+    font-family: "Karla", sans-serif;
+    font-size: 16px;
+    transition: border-color 170ms ease, transform 170ms ease, background-color 170ms ease;
+  }
+
+  .joke-row:hover {
+    border-color: var(--brand);
+    background-color: var(--surface-2);
+    transform: translateX(4px);
+  }
+
+  /* Loading ---------------------------------------------------------- */
+  .skeleton {
+    border-radius: 8px;
+    background-image: linear-gradient(
+      90deg,
+      var(--surface-2) 22%,
+      var(--line) 38%,
+      var(--surface-2) 60%
+    );
+    background-size: 420px 100%;
+    animation: shimmer 1.5s linear infinite;
+  }
+
+  /* Section panel: mounts fresh on every tab change, so this plays once. */
+  .pane {
+    animation: pane-in 280ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  }
+
+  /* Phones. Everything here is sized so a full board still fits across a
+     390px screen without the page scrolling sideways. */
+  @media (max-width: 640px) {
+    .card {
+      padding: 16px;
+      border-radius: 14px;
+    }
+
+    .tab {
+      padding: 0 10px;
+      font-size: 17px;
+      letter-spacing: 0.04em;
+    }
+
+    .tile {
+      width: 26px;
+      height: 35px;
+      border-radius: 6px;
+      font-size: 22px;
+    }
+
+    .tile-hidden::after {
+      width: 11px;
+    }
+
+    .tile-punct {
+      width: 11px;
+      font-size: 20px;
+    }
+
+    .slot {
+      width: 48px;
+      height: 52px;
+      font-size: 26px;
+    }
+
+    .chip {
+      min-width: 30px;
+      height: 30px;
+      font-size: 17px;
+    }
+
+    .seg {
+      display: flex;
+      width: 100%;
+    }
+
+    .seg-btn {
+      flex: 1;
+      padding: 0 10px;
+      font-size: 16px;
+    }
+
+    .btn {
+      font-size: 18px;
+      padding: 0 18px;
+    }
+
+    .label {
+      font-size: 15px;
+    }
+  }
+}
+
+@keyframes pane-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes tab-ink {
+  from {
+    transform: scaleX(0.25);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes tile-flip {
+  0% {
+    transform: rotateX(-92deg);
+    opacity: 0.25;
+  }
+  62% {
+    transform: rotateX(10deg);
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes heart-break {
+  0% {
+    transform: scale(1);
+  }
+  34% {
+    transform: scale(1.28) rotate(-9deg);
+  }
+  100% {
+    transform: scale(0.8);
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: -420px 0;
+  }
+  to {
+    background-position: 420px 0;
+  }
+}
+
+@keyframes trophy-in {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  55% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* Every animation on the site collapses to nothing here, the looping
+   skeleton shimmer included. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

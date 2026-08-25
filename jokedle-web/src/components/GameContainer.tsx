@@ -1,9 +1,19 @@
-import React, { useEffect } from "react";
-import { FirstPickInput } from "./FirstPickInput";
-import { JokeGrid } from "./JokeGrid";
+import React from "react";
 import { Joke } from "../interfaces/Joke";
-import { GuessingLetterInput } from "./GuessingLetterInput";
-import { GuessingPunchlineInput } from "./GuessingPunchlineInput";
+import {
+  Feedback,
+  GameState,
+  SetFeedback,
+  SetGameState,
+  livesLabel,
+  toKey,
+} from "../interfaces/GameState";
+import { FirstPickInput } from "./FirstPickInput";
+import { GameSkeleton } from "./GameSkeleton";
+import { GuessInput } from "./GuessInput";
+import { Lives } from "./Lives";
+import { PunchlineBoard } from "./PunchlineBoard";
+import { AlertIcon, CheckIcon, CrossIcon } from "./icons";
 
 export const GameContainer = ({
   gameState,
@@ -11,180 +21,158 @@ export const GameContainer = ({
   joke,
   letters,
   setLetters,
-  punchline,
-  setPunchline,
   lives,
   setLives,
-  feedbackMsg,
-  setFeedbackMsg,
+  feedback,
+  setFeedback,
 }: {
-  gameState: string;
-  setGameState: React.Dispatch<
-    React.SetStateAction<
-      | "loading"
-      | "firstPick"
-      | "guessingLetter"
-      | "guessingPunchline"
-      | "completeWin"
-      | "completeLoss"
-    >
-  >;
+  gameState: GameState;
+  setGameState: SetGameState;
+  joke: Joke;
   letters: string[];
   setLetters: React.Dispatch<React.SetStateAction<string[]>>;
-  punchline: string;
-  setPunchline: React.Dispatch<React.SetStateAction<string>>;
   lives: number;
   setLives: React.Dispatch<React.SetStateAction<number>>;
-  feedbackMsg: string;
-  setFeedbackMsg: React.Dispatch<React.SetStateAction<string>>;
-  joke: Joke;
+  feedback: Feedback | null;
+  setFeedback: SetFeedback;
 }) => {
-  // Letters that have been guessed
+  const key = React.useMemo(() => toKey(joke.punchline), [joke.punchline]);
 
-  useEffect(() => {
-    setPunchline(joke.punchline.replace(/[^a-zA-Z0-9]/g, "").toUpperCase());
-  }, [joke]);
-  useEffect(() => {
-    const allCharsInLetters = punchline
-      .split("")
-      .every((char) => letters.includes(char));
-    if (allCharsInLetters && punchline !== "") {
-      // Empty string check to prevent win when switching states.
+  // Won: every letter in the punchline is showing.
+  React.useEffect(() => {
+    if (key === "") return;
+    if (gameState !== "guessingLetter" && gameState !== "guessingPunchline") return;
+    if (key.split("").every((char) => letters.includes(char))) {
       setGameState("completeWin");
     }
-  }, [punchline, letters]);
-  // Logic for InputContainer.  Determines which input to show based on gameState.
-  const InputContainer = ({
-    gameState,
-    setGameState,
-    letters,
-    setLetters,
-    punchline,
-    lives,
-    setLives,
-    setFeedbackMsg,
-  }: {
-    gameState: string;
-    setGameState: React.Dispatch<
-      React.SetStateAction<
-        | "loading"
-        | "firstPick"
-        | "guessingLetter"
-        | "guessingPunchline"
-        | "completeWin"
-        | "completeLoss"
-      >
-    >;
-    letters: string[];
-    setLetters: React.Dispatch<React.SetStateAction<string[]>>;
-    punchline: string;
-    lives: number;
-    setLives: React.Dispatch<React.SetStateAction<number>>;
-    setFeedbackMsg: React.Dispatch<React.SetStateAction<string>>;
-  }) => {
-    if (gameState === "firstPick") {
-      return (
-        <FirstPickInput
-          gameState={gameState}
-          setGameState={setGameState}
-          letters={letters}
-          setLetters={setLetters}
-        />
-      );
-    } else if (gameState === "guessingLetter") {
-      return (
-        <GuessingLetterInput
-          gameState={gameState}
-          setGameState={setGameState}
-          letters={letters}
-          setLetters={setLetters}
-          punchline={punchline}
-          lives={lives}
-          setLives={setLives}
-          setFeedbackMsg={setFeedbackMsg}
-        />
-      );
-    } else if (gameState === "guessingPunchline") {
-      return (
-        <GuessingPunchlineInput
-          gameState={gameState}
-          setGameState={setGameState}
-          punchline={punchline}
-          lives={lives}
-          setLives={setLives}
-          setFeedbackMsg={setFeedbackMsg}
-        />
-      );
-    } else if (gameState === "completeWin") {
-      return (
-        <p className="text-2xl font-extrabold text-green-600 font-teko-semibold">
-          Nice job! You have solved the punchline!
-        </p>
-      );
-    } else if (gameState === "completeLoss") {
-      return (
-        <p className="text-2xl font-extrabold text-red-600 font-teko-semibold">
-          Game Over!
-        </p>
-      );
-    } else {
-      return <div>Game State Error</div>;
-    }
+  }, [key, letters, gameState, setGameState]);
+
+  // Lost: out of lives. Both kinds of wrong guess just decrement, so this is
+  // the single place the round ends — the punchline guess used to be able to
+  // take the last life without ending anything.
+  React.useEffect(() => {
+    if (lives > 0 || gameState === "completeWin" || gameState === "completeLoss") return;
+    setGameState("completeLoss");
+  }, [lives, gameState, setGameState]);
+
+  const playAgain = () => {
+    setLetters([]);
+    setLives(3);
+    setFeedback(null);
+    setGameState("firstPick");
   };
 
-  if (gameState === "loading")
-    return <div className="font-teko-semibold">Loading Joke of the day...</div>;
-  else
-    return (
-      <div className="flex flex-col items-center text-center">
-        <h1 className="text-lg">#{joke.jokeId}</h1>
-        <h2 className="text-2xl m-3 font-teko-semibold">{joke.setup}</h2>
-        <h3 className="text-xl font-teko-semibold">
-          Lives:{" "}
-          {Array.from({ length: lives }, (_, i) => (
-            <span key={i}>❤️</span>
-          ))}
-        </h3>
-        <h3 className="text-xl font-teko-semibold">Letters Guessed:</h3>
-        <div className="flex flex-wrap justify-center font-teko-semibold">
-          {letters.map((letter, index) => (
-            <span
-              key={index}
-              className="m-1 p-1 text-xl font-semibold border border-gray-600 rounded-md shadow-lg"
-            >
-              {letter}
-            </span>
-          ))}
+  if (gameState === "loading") return <GameSkeleton />;
+
+  return (
+    <div className="flex flex-col gap-5">
+      <div className="card [animation:rise-in_340ms_cubic-bezier(0.2,0.7,0.3,1)_both]">
+        <div className="flex flex-wrap items-baseline justify-between gap-4">
+          <span className="font-head text-base font-semibold uppercase tracking-[0.12em] text-brand-ink">
+            Joke No. {joke.jokeId}
+          </span>
+          <Lives lives={lives} />
         </div>
-        <div className="flex items-center">
-          <p className="text-md font-teko-semibold">{feedbackMsg}</p>
+        <h2 className="mt-[10px] font-head text-[26px] font-medium leading-tight text-ink [text-wrap:pretty] sm:text-[34px]">
+          {joke.setup}
+        </h2>
+      </div>
+
+      <PunchlineBoard punchline={joke.punchline} letters={letters} gameState={gameState} />
+
+      {letters.length > 0 && (
+        <div>
+          <span className="label">Letters you have tried</span>
+          <div className="flex flex-wrap gap-[6px]">
+            {letters.map((letter, index) => {
+              const isHit = key.includes(letter);
+              return (
+                <span key={`${letter}-${index}`} className={isHit ? "chip chip-hit" : "chip chip-miss"}>
+                  <span aria-hidden="true">{letter}</span>
+                  <span className="sr-only">
+                    {letter}, {isHit ? "in the punchline" : "not in the punchline"}
+                  </span>
+                </span>
+              );
+            })}
+          </div>
         </div>
-        <InputContainer
+      )}
+
+      <div className="min-h-[30px]" role="status" aria-live="polite">
+        {feedback && (
+          <p
+            className={`flex items-center gap-[9px] text-[15px] font-medium [animation:pop-in_240ms_cubic-bezier(0.2,0.8,0.25,1)_both] ${
+              feedback.kind === "good" ? "text-good-ink" : "text-bad-ink"
+            }`}
+          >
+            {feedback.kind === "good" ? <CheckIcon /> : <CrossIcon />}
+            <span>{feedback.text}</span>
+          </p>
+        )}
+      </div>
+
+      {gameState === "firstPick" && (
+        <FirstPickInput
+          setGameState={setGameState}
+          setLetters={setLetters}
+          punchline={joke.punchline}
+          setFeedback={setFeedback}
+        />
+      )}
+
+      {(gameState === "guessingLetter" || gameState === "guessingPunchline") && (
+        <GuessInput
           gameState={gameState}
           setGameState={setGameState}
           letters={letters}
           setLetters={setLetters}
-          punchline={punchline}
+          punchline={joke.punchline}
           lives={lives}
           setLives={setLives}
-          setFeedbackMsg={setFeedbackMsg}
+          setFeedback={setFeedback}
         />
-        <JokeGrid
-          formattedPunchline={joke.formattedPunchline}
-          letters={letters}
-          gameState={gameState}
-        />
+      )}
 
-        {/* <div className="flex flex-col items-center">
-          <h2 className="text-xl">Debug</h2>
-          <div>Game State: {gameState}</div>
-          <div>Letters: {letters}</div>
-          <div>Punchline: {punchline}</div>
-          <div>Lives: {lives}</div>
-          <button onClick={() => setGameState("guessingPunchline")}>
-            Guess PunchLine State
-          </button>
-        </div> */}
-      </div>
-    );
+      {gameState === "completeWin" && (
+        <div className="card">
+          <div className="flex flex-col items-center gap-[14px] text-center">
+            <span className="flex h-[62px] w-[62px] items-center justify-center rounded-full border border-good bg-good-soft text-good-ink [animation:trophy-in_480ms_cubic-bezier(0.2,0.85,0.25,1)_both]">
+              <CheckIcon size={30} />
+            </span>
+            <h3 className="font-head text-2xl font-semibold leading-tight text-ink sm:text-3xl">
+              You cracked it
+            </h3>
+            <p className="m-0 max-w-[42ch] text-ink-2">
+              Solved with {livesLabel(lives).replace(" left", "")} to spare. A fresh joke lands
+              every morning.
+            </p>
+            <button type="button" className="btn btn-ghost" onClick={playAgain}>
+              Play this one again
+            </button>
+          </div>
+        </div>
+      )}
+
+      {gameState === "completeLoss" && (
+        <div className="card">
+          <div className="flex flex-col items-center gap-[14px] text-center">
+            <span className="flex h-[62px] w-[62px] items-center justify-center rounded-full border border-bad bg-bad-soft text-bad-ink [animation:trophy-in_480ms_cubic-bezier(0.2,0.85,0.25,1)_both]">
+              <AlertIcon />
+            </span>
+            <h3 className="font-head text-2xl font-semibold leading-tight text-ink sm:text-3xl">
+              Out of lives
+            </h3>
+            <p className="m-0 max-w-[42ch] text-ink-2">
+              Here it is:{" "}
+              <span className="font-head text-2xl font-medium text-ink">{joke.punchline}</span>
+            </p>
+            <button type="button" className="btn btn-ghost" onClick={playAgain}>
+              Try it again
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };

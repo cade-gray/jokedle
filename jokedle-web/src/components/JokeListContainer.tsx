@@ -1,69 +1,117 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Joke, JokeListItem } from "../interfaces/Joke";
-import React from "react";
+import { SetAppState, SetFeedback, SetGameState } from "../interfaces/GameState";
 
 export const JokeListContainer = ({
-    setGameState,
-    setJoke,
-    setLetters,
-    setLives,
-    setFeedbackMsg,
-    setAppState
+  setGameState,
+  setJoke,
+  setLetters,
+  setLives,
+  setFeedback,
+  setAppState,
 }: {
-    setGameState: React.Dispatch<
-        React.SetStateAction<
-            | "loading"
-            | "firstPick"
-            | "guessingLetter"
-            | "guessingPunchline"
-            | "completeWin"
-            | "completeLoss"
-        >
-    >;
-    setLetters: React.Dispatch<React.SetStateAction<string[]>>;
-    setLives: React.Dispatch<React.SetStateAction<number>>;
-    setFeedbackMsg: React.Dispatch<React.SetStateAction<string>>;
-    setJoke: React.Dispatch<React.SetStateAction<Joke>>;
-    setAppState: React.Dispatch<React.SetStateAction<"loading" | "inGame" | "howTo" | "jokeList" | "jokeSubmission">>;
+  setGameState: SetGameState;
+  setJoke: React.Dispatch<React.SetStateAction<Joke>>;
+  setLetters: React.Dispatch<React.SetStateAction<string[]>>;
+  setLives: React.Dispatch<React.SetStateAction<number>>;
+  setFeedback: SetFeedback;
+  setAppState: SetAppState;
 }) => {
-    // Array of jokes pulled from api
-    const [jokes, setJokes] = React.useState<JokeListItem[]>([]);
+  const [jokes, setJokes] = React.useState<JokeListItem[]>([]);
+  const [status, setStatus] = React.useState<"loading" | "ready" | "error">("loading");
 
-    const changeJoke = (jokeId: number) => {
-        console.log(jokeId);
-        fetch(`https://jokedle-api.cadegray.dev/joke/id/${jokeId}`)
-            .then((response) => response.json())
-            .then((data) => {
-                setJoke({
-                    jokeId: data.jokeId,
-                    setup: data.setup,
-                    punchline: data.punchline,
-                    formattedPunchline: data.formattedPunchline,
-                });
-                setGameState("firstPick");
-                setLetters([]);
-                setLives(3);
-                setFeedbackMsg("");
-                setAppState("inGame");
-            });
-    }
+  useEffect(() => {
+    let cancelled = false;
 
-    useEffect(() => {
-        fetch("https://jokedle-api.cadegray.dev/joke/all/weblist")
-            .then((response) => response.json())
-            .then((data) => setJokes(data));
-    }, []);
-    return (
-        <div className="flex flex-col m-3 p-3 border border-jokedle rounded-md shadow-md shadow-[#4ac4da]">
-            <h1 className="text-3xl text-center font-teko-semibold">Joke List</h1>
-            <div className="flex flex-col">
-                {jokes.length === 0 && <p>Loading Jokes...</p>}
-                {jokes.map((joke) => (
-                    <div key={joke.jokeId} className="flex flex-col m-2 p-2 shadow-md border border-jokedle rounded-md hover:shadow-[#4ac4da]">
-                        <button className="text-lg font-teko-semibold bg-transparent" onClick={()=>changeJoke(joke.jokeId)}>#{joke.jokeId}: {joke.setup}</button>
-                    </div>
-                ))}
-            </div>
+    fetch("https://jokedle-api.cadegray.dev/joke/all/weblist")
+      .then((response) => {
+        if (!response.ok) throw new Error(String(response.status));
+        return response.json();
+      })
+      .then((data: JokeListItem[]) => {
+        if (cancelled) return;
+        setJokes(data);
+        setStatus("ready");
+      })
+      .catch(() => {
+        if (!cancelled) setStatus("error");
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const changeJoke = (jokeId: number) => {
+    setGameState("loading");
+    setAppState("inGame");
+
+    fetch(`https://jokedle-api.cadegray.dev/joke/id/${jokeId}`)
+      .then((response) => {
+        if (!response.ok) throw new Error(String(response.status));
+        return response.json();
+      })
+      .then((data: Joke) => {
+        setJoke({
+          jokeId: data.jokeId,
+          setup: data.setup,
+          punchline: data.punchline,
+          formattedPunchline: data.formattedPunchline,
+        });
+        setLetters([]);
+        setLives(3);
+        setFeedback(null);
+        setGameState("firstPick");
+      })
+      .catch(() => setAppState("error"));
+  };
+
+  return (
+    <div className="card flex flex-col gap-4">
+      <div>
+        <h2 className="m-0 font-head text-[26px] font-semibold leading-tight text-ink sm:text-[34px]">
+          Every joke so far
+        </h2>
+        <p className="mt-[6px] text-[16.5px] text-ink-2">Pick any one to play it from the start.</p>
+      </div>
+
+      {status === "loading" && (
+        <div className="flex flex-col gap-2" aria-hidden="true">
+          {Array.from({ length: 6 }, (_, index) => (
+            <div className="skeleton h-[52px] rounded-xl" key={index} />
+          ))}
         </div>
-    );
+      )}
+
+      {status === "loading" && (
+        <p className="sr-only" role="status">
+          Loading the joke list.
+        </p>
+      )}
+
+      {status === "error" && (
+        <p className="m-0 text-bad-ink" role="status">
+          The joke list did not load. Check your connection and try again.
+        </p>
+      )}
+
+      {status === "ready" && (
+        <div className="flex flex-col gap-2">
+          {jokes.map((joke) => (
+            <button
+              type="button"
+              key={joke.jokeId}
+              className="joke-row"
+              onClick={() => changeJoke(joke.jokeId)}
+            >
+              <span className="flex-none pt-px font-head text-[17px] font-semibold text-brand-ink">
+                #{joke.jokeId}
+              </span>
+              <span>{joke.setup}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 };

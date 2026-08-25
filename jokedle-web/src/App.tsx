@@ -1,131 +1,143 @@
-import { useEffect } from "react";
-import "./App.css";
-import React from "react";
+import React, { useEffect } from "react";
+import { AppNav } from "./components/AppNav";
 import { GameContainer } from "./components/GameContainer";
-import { Joke } from "./interfaces/Joke";
+import { GameSkeleton } from "./components/GameSkeleton";
 import { HowToContainer } from "./components/HowToContainer";
 import { JokeListContainer } from "./components/JokeListContainer";
 import { JokeSubmissionContainer } from "./components/JokeSubmissionContainer";
+import { ThemeToggle } from "./components/ThemeToggle";
+import { AlertIcon } from "./components/icons";
+import { useTheme } from "./hooks/useTheme";
+import { AppState, Feedback, GameState } from "./interfaces/GameState";
+import { Joke } from "./interfaces/Joke";
+
+const EMPTY_JOKE: Joke = { jokeId: 0, setup: "", punchline: "", formattedPunchline: "" };
+
 function App() {
-  const [joke, setJoke] = React.useState<Joke>({
-    jokeId: 0,
-    setup: "",
-    punchline: "",
-    formattedPunchline: "",
-  });
-  const [appState, setAppState] = React.useState<
-    "loading" | "inGame" | "howTo" | "jokeList" | "jokeSubmission"
-  >("loading");
-  // Game state is at app level so the app state can change and the game will remain the same.
-  const [gameState, setGameState] = React.useState<
-    | "loading"
-    | "firstPick"
-    | "guessingLetter"
-    | "guessingPunchline"
-    | "completeWin"
-    | "completeLoss"
-  >("loading");
+  const { theme, toggleTheme } = useTheme();
+
+  const [joke, setJoke] = React.useState<Joke>(EMPTY_JOKE);
+  const [appState, setAppState] = React.useState<AppState>("loading");
+
+  // Game state lives up here so switching sections leaves the round untouched.
+  const [gameState, setGameState] = React.useState<GameState>("loading");
   const [letters, setLetters] = React.useState<string[]>([]);
   const [lives, setLives] = React.useState<number>(3);
-  // Why is punchline here if it is in the joke interface?
-  const [punchline, setPunchline] = React.useState<string>("");
-  const [feedbackMsg, setFeedbackMsg] = React.useState<string>("");
+  const [feedback, setFeedback] = React.useState<Feedback | null>(null);
 
   useEffect(() => {
     fetch("https://jokedle-api.cadegray.dev/joke")
-      .then((response) => response.json())
-      .then((data) => {
-        const jokeBody = data[0];
+      .then((response) => {
+        if (!response.ok) throw new Error(String(response.status));
+        return response.json();
+      })
+      .then((data: Joke[]) => {
+        const today = data[0];
         setJoke({
-          jokeId: jokeBody.jokeId,
-          setup: jokeBody.setup,
-          punchline: jokeBody.punchline,
-          formattedPunchline: jokeBody.formattedPunchline,
+          jokeId: today.jokeId,
+          setup: today.setup,
+          punchline: today.punchline,
+          formattedPunchline: today.formattedPunchline,
         });
         setGameState("firstPick");
-        setAppState("inGame");
-      });
+        // Only take them to the game if they are still waiting on it — they
+        // may have wandered off to How to play while it loaded.
+        setAppState((current) => (current === "loading" ? "inGame" : current));
+      })
+      .catch(() => setAppState("error"));
   }, []);
 
-  const headerButtonClasses =
-    "m-1 p-1 border-2 border-gray-600 text-center text-lg w-20 rounded-md shadow-md";
+  // "loading" and "error" are still the Play section as far as the tabs go.
+  const section = appState === "loading" || appState === "error" ? "inGame" : appState;
+
+  const panel = () => {
+    switch (appState) {
+      case "loading":
+        return <GameSkeleton />;
+      case "error":
+        return (
+          <div className="card flex flex-col items-center gap-[14px] text-center">
+            <span className="flex h-[62px] w-[62px] items-center justify-center rounded-full border border-bad bg-bad-soft text-bad-ink">
+              <AlertIcon />
+            </span>
+            <h2 className="m-0 font-head text-3xl font-semibold leading-tight text-ink">
+              Today&rsquo;s joke did not load
+            </h2>
+            <p className="m-0 max-w-[42ch] text-ink-2">
+              Something went wrong reaching the joke server. Reload the page to try again, or pick
+              one from the Jokes tab.
+            </p>
+          </div>
+        );
+      case "howTo":
+        return <HowToContainer />;
+      case "jokeList":
+        return (
+          <JokeListContainer
+            setGameState={setGameState}
+            setJoke={setJoke}
+            setLetters={setLetters}
+            setLives={setLives}
+            setFeedback={setFeedback}
+            setAppState={setAppState}
+          />
+        );
+      case "jokeSubmission":
+        return <JokeSubmissionContainer />;
+      default:
+        return (
+          <GameContainer
+            gameState={gameState}
+            setGameState={setGameState}
+            joke={joke}
+            letters={letters}
+            setLetters={setLetters}
+            lives={lives}
+            setLives={setLives}
+            feedback={feedback}
+            setFeedback={setFeedback}
+          />
+        );
+    }
+  };
 
   return (
-    <div className="flex flex-col items-center max-w-screen-lg mx-auto font-teko-semibold">
-      <h1 className="text-4xl font-climatecrisis-regular">Jokedle</h1>
-      <h2 className="text-lg">Guess The Punchline</h2>
-      <div className="flex justify-between">
-        <button
-          className={headerButtonClasses}
-          onClick={() => setAppState("inGame")}
-        >
-          Play
-        </button>
-        <button
-          className={headerButtonClasses}
-          onClick={() => setAppState("howTo")}
-        >
-          How To Play
-        </button>
-        <button
-          className={headerButtonClasses}
-          onClick={() => setAppState("jokeList")}
-        >
-          Joke List
-        </button>
-        <button
-          className={headerButtonClasses}
-          onClick={() => setAppState("jokeSubmission")}
-        >
-          Submit A Joke
-        </button>
+    <div className="mx-auto flex min-h-screen max-w-[960px] flex-col gap-4 px-4 pb-9 pt-5 sm:gap-[22px] sm:px-8 sm:pt-[30px]">
+      <header className="flex items-start justify-between gap-3 sm:gap-6">
+        <div>
+          <h1 className="m-0 font-display text-[30px] leading-none text-ink sm:text-[42px]">
+            Jokedle
+          </h1>
+          <p className="mt-[6px] font-head text-[15px] font-medium uppercase leading-none tracking-[0.13em] text-ink-3 sm:mt-2 sm:text-[19px]">
+            Guess the punchline
+          </p>
+        </div>
+        <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+      </header>
+
+      <AppNav appState={appState} setAppState={setAppState} />
+
+      {/* Keyed on the section so the panel remounts and the entry animation
+          plays on every switch. */}
+      <div
+        key={appState}
+        className="pane flex flex-1 flex-col gap-5"
+        role="tabpanel"
+        id={`panel-${section}`}
+        aria-labelledby={`tab-${section}`}
+      >
+        {panel()}
       </div>
-      {appState === "loading" ? (
-        <div className="text-lg text-center">Loading...</div>
-      ) : appState === "inGame" ? (
-        <GameContainer
-          gameState={gameState}
-          setGameState={setGameState}
-          joke={joke}
-          letters={letters}
-          setLetters={setLetters}
-          lives={lives}
-          setLives={setLives}
-          punchline={punchline}
-          setPunchline={setPunchline}
-          feedbackMsg={feedbackMsg}
-          setFeedbackMsg={setFeedbackMsg}
-        />
-      ) : appState === "howTo" ? (
-        <HowToContainer />
-      ) : appState === "jokeList" ? (
-        <JokeListContainer
-          setGameState={setGameState}
-          setJoke={setJoke}
-          setLetters={setLetters}
-          setLives={setLives}
-          setFeedbackMsg={setFeedbackMsg}
-          setAppState={setAppState}
-        />
-      ) : appState === "jokeSubmission" ? (
-        <JokeSubmissionContainer />
-      ) : null}
-      <div className="text-center">
-        <p>
-          Made with ❤️ by{" "}
-          <a className="text-[#4ac4da]" href="https://cadegray.dev">
-            Cade Gray
-          </a>
+
+      {/* py-2 on the links enlarges the tap target without disturbing the line. */}
+      <footer className="flex flex-wrap items-center justify-between gap-4 border-t border-line pt-[18px] text-sm text-ink-3 [&_a]:py-2">
+        <p className="m-0">
+          Made with ❤️ by <a href="https://cadegray.dev">Cade Gray</a>
         </p>
-        <p>
-          <a
-            className="text-[#4ac4da]"
-            href="https://github.com/cade-gray/jokedle-web"
-          >
-            Source Code
-          </a>
+        <p className="m-0">
+          <a href="https://github.com/cade-gray/jokedle-web">Source code</a>
         </p>
-      </div>
+      </footer>
     </div>
   );
 }
