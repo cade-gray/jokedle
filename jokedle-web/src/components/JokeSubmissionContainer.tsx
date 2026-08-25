@@ -1,93 +1,142 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { CheckIcon, CrossIcon } from "./icons";
+
+const SETUP_MAX = 255;
+const PUNCHLINE_MAX = 50;
+const SOURCE_MAX = 45;
+
+type Status = "idle" | "sending" | "sent" | "error";
 
 export const JokeSubmissionContainer = () => {
-  const [setup, setSetup] = useState('');
-  const [punchline, setPunchline] = useState('');
-  const [source, setSource] = useState('');
+  const [setup, setSetup] = useState("");
+  const [punchline, setPunchline] = useState("");
+  const [source, setSource] = useState("");
+  const [status, setStatus] = useState<Status>("idle");
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
-    const Joke = {
-      joke: {
-        setup: setup,
-        punchline: punchline,
-        source: source,
-      },
-    };
+    setStatus("sending");
 
     try {
-      const response = await fetch('https://jokedle-api.cadegray.dev/joke/submission', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(Joke),
+      const response = await fetch("https://jokedle-api.cadegray.dev/joke/submission", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ joke: { setup, punchline, source } }),
       });
 
-      if (response.ok) {
-        // Handle successful submission
-        alert('Joke submitted successfully. Thank you!');
-      } else {
-        // Handle errors
-        alert('Error submitting joke, please try again. Apologies for the inconvenience.');
+      if (!response.ok) {
+        setStatus("error");
+        return;
       }
-    } catch (error) {
-      // Commented out for security reasons to prevent leaking information.  If needed, look into logging to a secure location.
-      //console.error('Error:', error);
+
+      setStatus("sent");
+      setSetup("");
+      setPunchline("");
+      setSource("");
+    } catch {
+      // Deliberately not logged: the response can carry detail that should not
+      // end up in the browser console.
+      setStatus("error");
     }
-    // Clear form fields
-    setSetup('');
-    setPunchline('');
-    setSource('');
+  };
+
+  // Typing again clears the last result so the message never goes stale.
+  const onEdit = <T,>(setter: React.Dispatch<React.SetStateAction<T>>) => (value: T) => {
+    setter(value);
+    setStatus((current) => (current === "idle" || current === "sending" ? current : "idle"));
   };
 
   return (
-    <div className="flex flex-col m-3 p-3 border border-jokedle rounded-md shadow-md shadow-[#4ac4da]">
-      <h1 className="text-3xl text-center">Submit a Joke</h1>
-      <p className="text-lg text-center">
-        If you have a joke you would like to share, you may submit it here. It will be reviewed before being added to the list of jokes.
-        Keep in mind that jokes must not be too cheesy, inappropriate, or offensive to be accepted into the list. My goal is to keep it to jokes that
-        I find funny and mostly suitable for everyone.
-      </p>
-      <form
-        className="flex flex-col m-3 p-3 border border-jokedle rounded-md shadow-md shadow-[#4ac4da]"
-        onSubmit={handleSubmit}
-      >
-        <label className="text-lg">Setup</label>
-        <textarea
-          className="m-1 p-1 border border-gray-600 rounded-md shadow-lg"
-          name="setup"
-          value={setup}
-          onChange={(e) => setSetup(e.target.value)}
-          maxLength={255}
-          required
-        />
-        <label className="text-lg">Punchline</label>
-        <textarea
-          className="m-1 p-1 border border-gray-600 rounded-md shadow-lg"
-          name="punchline"
-          value={punchline}
-          onChange={(e) => setPunchline(e.target.value)}
-          maxLength={50}
-          required
-        />
-        <label className="text-lg">Submitted By</label>
-        <input
-          className="m-1 p-1 border border-gray-600 rounded-md shadow-lg dark:bg-[#222222]"
-          type="text"
-          name="source"
-          value={source}
-          onChange={(e) => setSource(e.target.value)}
-          maxLength={45}
-          required
-        />
-        <button
-          className="m-1 p-1 border border-gray-600 rounded-md shadow-lg text-lg hover:border-jokedle hover:shadow-[#4ac4da] dark:text-white"
-          type="submit"
-        >
-          Submit
-        </button>
+    <div className="card flex flex-col gap-[18px]">
+      <div>
+        <h2 className="m-0 font-head text-[26px] font-semibold leading-tight text-ink sm:text-[34px]">
+          Send in a joke
+        </h2>
+        <p className="mt-[6px] max-w-[60ch] text-[16.5px] text-ink-2">
+          Got one worth sharing? Send it over. I read every submission before it goes in, and I keep
+          the list to jokes that are genuinely funny and fine for anyone to read — so nothing too
+          cheesy, crude or unkind.
+        </p>
+      </div>
+
+      <form className="flex flex-col gap-[14px]" onSubmit={handleSubmit}>
+        <div>
+          <label className="label" htmlFor="submit-setup">
+            Setup
+          </label>
+          <textarea
+            id="submit-setup"
+            className="field"
+            rows={2}
+            maxLength={SETUP_MAX}
+            required
+            value={setup}
+            onChange={(event) => onEdit(setSetup)(event.target.value)}
+            placeholder="Why did the scarecrow win an award?"
+          />
+          <p className="hint mt-1">
+            {setup.length} of {SETUP_MAX} characters
+          </p>
+        </div>
+
+        <div>
+          <label className="label" htmlFor="submit-punchline">
+            Punchline
+          </label>
+          <textarea
+            id="submit-punchline"
+            className="field"
+            rows={2}
+            maxLength={PUNCHLINE_MAX}
+            required
+            value={punchline}
+            onChange={(event) => onEdit(setPunchline)(event.target.value)}
+            placeholder="He was outstanding in his field."
+          />
+          <p className="hint mt-1">
+            {punchline.length} of {PUNCHLINE_MAX} characters — short punchlines make the best
+            puzzles.
+          </p>
+        </div>
+
+        <div>
+          <label className="label" htmlFor="submit-source">
+            Your name
+          </label>
+          <input
+            id="submit-source"
+            className="field"
+            type="text"
+            maxLength={SOURCE_MAX}
+            required
+            value={source}
+            onChange={(event) => onEdit(setSource)(event.target.value)}
+            placeholder="So I can credit you"
+          />
+        </div>
+
+        <div className="flex flex-wrap items-center gap-[14px]">
+          <button type="submit" className="btn btn-primary" disabled={status === "sending"}>
+            {status === "sending" ? "Sending…" : "Send it in"}
+          </button>
+
+          {/* Replaces the alert() the old build used, so focus stays put and
+              the message can be re-read. */}
+          <div role="status" aria-live="polite">
+            {status === "sent" && (
+              <p className="m-0 flex items-center gap-2 text-[15px] font-medium text-good-ink [animation:pop-in_240ms_cubic-bezier(0.2,0.8,0.25,1)_both]">
+                <CheckIcon />
+                <span>Thanks — it is in the queue. I will take a look.</span>
+              </p>
+            )}
+            {status === "error" && (
+              <p className="m-0 flex items-center gap-2 text-[15px] font-medium text-bad-ink [animation:pop-in_240ms_cubic-bezier(0.2,0.8,0.25,1)_both]">
+                <CrossIcon />
+                <span>That did not go through. Please try again in a moment.</span>
+              </p>
+            )}
+          </div>
+        </div>
       </form>
     </div>
   );

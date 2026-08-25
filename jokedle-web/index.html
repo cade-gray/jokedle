@@ -7,7 +7,29 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4f6f6" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#141718" media="(prefers-color-scheme: dark)" />
     <title>Jokedle: Guess the Punchline</title>
+    <!--
+      Runs before first paint so the page never flashes the wrong theme.
+      Keep the storage key in sync with src/hooks/useTheme.ts.
+    -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("jokedle-theme");
+          var theme =
+            stored === "light" || stored === "dark"
+              ? stored
+              : window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+          document.documentElement.classList.toggle("dark", theme === "dark");
+        } catch (e) {
+          /* Private mode or storage blocked — fall through to the light default. */
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
